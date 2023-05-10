@@ -18,9 +18,14 @@
 
     <!-- микросервисы -->
     <modules>
-        <module>ClientProfileService</module>
-        <module>ClientProfileLoader</module>
+        <module>ClientProfileAvatar</module>
+        <module>ClientProfileFacade</module>
         <module>ClientProfileCommon</module>
+        <module>ClientProfileLoader</module>
+        <module>ClientProfileNotification</module>
+        <module>ClientProfileRecognition</module>
+        <module>ClientProfileService</module>
+        <module>ClientProfileUpdate</module>
     </modules>
 
 </project>
