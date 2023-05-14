@@ -1,3 +1,7 @@
-### Reference Documentation
+## Reference Documentation
+МКС ClientProfileLoader - назначение работать с БД записывать информацию по 
+обновлению\созданию документов\справок\контактных данных информации которая будет отображаться в Личном Кабинете пользователя
 
-* 
+### Изменения в МКС ClientProfileLoader
+* [14.05.2022]
+  add documentation 
