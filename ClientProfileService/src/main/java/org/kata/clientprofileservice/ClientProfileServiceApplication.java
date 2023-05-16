@@ -8,6 +8,5 @@ public class ClientProfileServiceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ClientProfileServiceApplication.class, args);
-
     }
 }
