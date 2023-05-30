@@ -26,6 +26,8 @@ public class Individual {
     @UuidGenerator
     @Column(name = "id")
     private String uuid;
+    @Column(name = "icp")
+    private String icp;
     @Column(name = "name")
     private String name;
     @Column(name = "surname")
