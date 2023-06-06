@@ -1,13 +1,12 @@
-package com.kata.clientprofileavatar.service;
+package com.kata.clientprofileavatar.dao;
 
 import com.kata.clientprofileavatar.entity.Avatar;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
 
-public interface AvatarService {
+public interface AvatarDao {
     Avatar getAvatarById(int id);
 
     void addAvatar(MultipartFile file) throws IOException;
