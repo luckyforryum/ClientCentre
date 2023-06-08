@@ -13,7 +13,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "rf_driving_license")
+@Table(name = "INN_doc")
 @Entity
 public class INNDoc {
     @Id

@@ -47,12 +47,14 @@ public class Individual {
     @Temporal(TemporalType.DATE)
     private Date birthDate;
 
-    @Column(name = "documents")
+
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "documents_id")
     private Documents documents;
 
-    @Column(name = "contacts")
+
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "contacts_id")
     private ContactMedium contacts;
 
 
