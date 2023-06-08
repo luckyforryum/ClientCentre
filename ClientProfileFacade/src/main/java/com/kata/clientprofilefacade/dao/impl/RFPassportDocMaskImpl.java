@@ -1,6 +1,7 @@
 package com.kata.clientprofilefacade.dao.impl;
 
 import com.kata.clientprofilefacade.dao.RFPassportDocMaskDao;
+import com.kata.clientprofilefacade.dto.RFPassportDocDTO;
 import com.kata.clientprofilefacade.util.RFPassportDocUtils;
 import org.kata.entity.document.RFPassportDoc;
 import org.slf4j.Logger;
@@ -22,10 +23,10 @@ public class RFPassportDocMaskImpl implements RFPassportDocMaskDao {
      * @return Disguised object
      */
     @Override
-    public RFPassportDoc maskPassport(RFPassportDoc rfPassportDoc) {
+    public RFPassportDocDTO maskPassport(RFPassportDocDTO rfPassportDoc) {
         LOGGER.info("Masking the series and number of the passport",rfPassportDoc);
         RFPassportDocUtils.checkPassport(rfPassportDoc);
-        rfPassportDoc.setSeries(rfPassportDoc.getSeries().replaceAll("\\d{2}(\\d{2})", "$1**"));
+        rfPassportDoc.setSeries(rfPassportDoc.getSeries().replaceAll("(\\d{2})\\d{2}", "$1**"));
         rfPassportDoc.setNumber(rfPassportDoc.getNumber().replaceAll("\\d{4}(\\d{2})", "****$1"));
         return rfPassportDoc;
     }

@@ -15,4 +15,8 @@ public class InvalidFullNameException extends RuntimeException {
         super(message);
         LOGGER.error("InvalidFullNameException {}",message);
     }
+
+    public InvalidFullNameException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

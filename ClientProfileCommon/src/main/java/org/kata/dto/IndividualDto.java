@@ -10,6 +10,5 @@ import lombok.Setter;
 public class IndividualDto {
 
     private String name;
-
     private String surname;
 }

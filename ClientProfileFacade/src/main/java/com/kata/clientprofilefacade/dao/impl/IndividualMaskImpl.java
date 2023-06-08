@@ -1,8 +1,8 @@
 package com.kata.clientprofilefacade.dao.impl;
 
 import com.kata.clientprofilefacade.dao.IndividualMaskDao;
+import com.kata.clientprofilefacade.dto.IndividualDTO;
 import com.kata.clientprofilefacade.util.IndividualUtils;
-import org.kata.entity.individual.Individual;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -23,7 +23,7 @@ public class IndividualMaskImpl implements IndividualMaskDao {
      * @return Disguised object
      */
     @Override
-    public Individual maskName(Individual individual) {
+    public IndividualDTO maskName(IndividualDTO individual) {
         LOGGER.info("Surname masking",individual);
 
         IndividualUtils.fullNameConfirmation(individual);

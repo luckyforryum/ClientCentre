@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+
 @OpenAPIDefinition(
         info = @Info(
                 title = "Masking microservice",
@@ -21,16 +22,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
                 license = @License (
                         name = "license",
                         url = "clientcentre.com"
-                )
-
-
-
-        )
+                ))
 )
 public class ClientProfileFacadeApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ClientProfileFacadeApplication.class, args);
+
     }
 
 }

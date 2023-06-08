@@ -1,7 +1,6 @@
 package com.kata.clientprofilefacade.service;
 
-import org.kata.entity.individual.Individual;
-
+import com.kata.clientprofilefacade.dto.IndividualDTO;
 public interface IndividualMaskService {
-    Individual maskName(Individual individual);
+    IndividualDTO maskName(IndividualDTO individual);
 }

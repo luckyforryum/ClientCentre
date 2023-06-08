@@ -1,8 +1,8 @@
 package com.kata.clientprofilefacade.service;
 
-import org.kata.entity.document.RFPassportDoc;
+import com.kata.clientprofilefacade.dto.RFPassportDocDTO;
 
 public interface RFPassportDocMaskService {
-    RFPassportDoc maskPassport(RFPassportDoc rfPassportDoc);
+    RFPassportDocDTO maskPassport(RFPassportDocDTO rfPassportDoc);
 
 }

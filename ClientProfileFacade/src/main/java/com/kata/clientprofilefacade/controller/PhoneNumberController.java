@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,11 +41,7 @@ public class PhoneNumberController {
                                     schema = @Schema(implementation = PhoneNumberErrorForSwagger.class)))
             })
 
-    public PhoneNumberDTO maskPhoneNumber(@RequestBody PhoneNumberDTO phoneNumber) {
+    public PhoneNumberDTO maskPhoneNumber(@Valid @RequestBody PhoneNumberDTO phoneNumber) {
         return phoneNumberMaskService.maskPhoneNumber(phoneNumber);
     }
-
-
-
-
 }
