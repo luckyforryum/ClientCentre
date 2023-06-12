@@ -1,42 +1,26 @@
-package org.kata.clientprofileservice.config;
+package org.kata.clientprofileloader.config;
 
 import lombok.AllArgsConstructor;
-import org.kata.config.ExceptionRestController;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.config.CustomEditorConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.web.client.RestTemplate;
 
 import javax.sql.DataSource;
-import java.beans.PropertyEditor;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
+
 
 @Configuration
 @AllArgsConstructor
-public class ServiceConfig {
-
-    @Bean
-    public ExceptionRestController exceptionRestController() {
-        return new ExceptionRestController();
-    }
+public class LoaderConfig {
 
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
-
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-
 
     @Bean
     public DataSource dataSource() {
