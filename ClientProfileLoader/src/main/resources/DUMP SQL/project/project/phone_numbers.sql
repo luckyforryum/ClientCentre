@@ -5,7 +5,7 @@ create table project.phone_numbers
     phone      varchar(255),
     contact_id varchar(255)
         constraint fkn6bfgcalpl4vg4ibytnhnggy1
-            references project.contact_medium
+            references micro.contact_medium
 );
 
 alter table project.phone_numbers

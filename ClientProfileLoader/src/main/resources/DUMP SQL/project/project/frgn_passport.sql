@@ -24,7 +24,7 @@ create table project.frgn_passport
     validate_date   date,
     document_id     varchar(255)
         constraint fk5jcfh87tls0oa053rpr9vlp2r
-            references project.documents
+            references micro.documents
 );
 
 alter table project.frgn_passport

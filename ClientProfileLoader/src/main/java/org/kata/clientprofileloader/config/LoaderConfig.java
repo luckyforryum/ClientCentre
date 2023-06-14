@@ -2,6 +2,8 @@ package org.kata.clientprofileloader.config;
 
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -17,6 +19,8 @@ import java.util.Properties;
 @AllArgsConstructor
 public class LoaderConfig {
 
+
+
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
@@ -26,9 +30,9 @@ public class LoaderConfig {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/project?currentSchema=micro");
+        dataSource.setUrl("jdbc:postgresql://localhost:5434/profile_loader_db?currentSchema=public");
         dataSource.setUsername("postgres");
-        dataSource.setPassword("root");
+        dataSource.setPassword("123");
         return dataSource;
     }
 

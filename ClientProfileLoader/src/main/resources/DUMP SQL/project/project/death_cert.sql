@@ -10,7 +10,7 @@ create table project.death_cert
     series      varchar(255) not null,
     document_id varchar(255)
         constraint fk14r36up8fkh829xo4ybwc98m5
-            references project.documents
+            references micro.documents
 );
 
 alter table project.death_cert

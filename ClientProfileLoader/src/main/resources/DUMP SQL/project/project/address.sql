@@ -21,7 +21,7 @@ create table project.address
     zipcode              varchar(255),
     individual_id        varchar(255)
         constraint fkn4ev0lritti7kpot4129w4wl
-            references project.individual
+            references micro.individual
 );
 
 alter table project.address
