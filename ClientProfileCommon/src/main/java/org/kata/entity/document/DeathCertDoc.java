@@ -1,5 +1,6 @@
 package org.kata.entity.document;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,13 +37,14 @@ public class DeathCertDoc {
     @Column(name = "department")
     private String departmentDoc;
 
-    @Column(name = "issued_date")
+    @Column(name = "date")
     @Temporal(TemporalType.DATE)
     private Date getDateDoc;
-
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "document_id", referencedColumnName = "id")
     private Documents documents;
+
+
 }
 

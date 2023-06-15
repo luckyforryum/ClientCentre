@@ -13,7 +13,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "rf_driving_license")
+@Table(name = "INN_doc")
 @Entity
 public class INNDoc {
     @Id
@@ -40,7 +40,6 @@ public class INNDoc {
     private String issuedBy;
     private String division;
     private String birthplace;
-
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "document_id", referencedColumnName = "id")
     private Documents documents;
