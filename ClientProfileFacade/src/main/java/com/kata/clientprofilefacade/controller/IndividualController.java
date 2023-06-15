@@ -40,7 +40,7 @@ public class IndividualController {
                                     schema = @Schema(implementation = IndividualErrorForSwagger.class)))
             })
     public IndividualDTO maskFullName(@Valid @RequestBody IndividualDTO individual) {
-        individualMaskService.maskName(individual);
-        return individual;
+//        individualMaskService.maskName(individual);
+        return individualMaskService.maskName(individual);
     }
 }

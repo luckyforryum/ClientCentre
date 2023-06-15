@@ -1,9 +1,7 @@
 package com.kata.clientprofilefacade.dto;
 
-import com.kata.clientprofilefacade.util.PhoneNumberConstants;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
-import jdk.jfr.DataAmount;
 import lombok.*;
 
 import static com.kata.clientprofilefacade.util.PhoneNumberConstants.PHONE_NUMBER_FORMAT;

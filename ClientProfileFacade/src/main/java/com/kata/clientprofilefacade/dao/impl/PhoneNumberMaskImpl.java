@@ -1,13 +1,10 @@
 package com.kata.clientprofilefacade.dao.impl;
 
 import com.kata.clientprofilefacade.dao.PhoneNumberMaskDao;
-//import com.kata.clientprofilefacade.dto.PhoneNumberDTO;
 import com.kata.clientprofilefacade.dto.PhoneNumberDTO;
 import com.kata.clientprofilefacade.util.PhoneNumberConstants;
 import com.kata.clientprofilefacade.util.PhoneNumberUtils;
-import org.kata.entity.contactmedium.PhoneNumber;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -16,8 +13,8 @@ import org.springframework.stereotype.Repository;
  * @author Chong Nguyen
  */
 @Repository
+@Slf4j
 public class PhoneNumberMaskImpl implements PhoneNumberMaskDao {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PhoneNumberMaskImpl.class);
 
     /**
      * This method checks for null and then masks the phone number
@@ -26,7 +23,7 @@ public class PhoneNumberMaskImpl implements PhoneNumberMaskDao {
      */
     @Override
     public PhoneNumberDTO maskPhoneNumber(PhoneNumberDTO phoneNumber) {
-        LOGGER.info("Masking phone number", phoneNumber);
+        log.info("Masking phone number", phoneNumber);
         PhoneNumberUtils.validatePhoneNumber(phoneNumber.getValue());
 //        PhoneNumberDTO phoneNumberDTO = new PhoneNumberDTO(phoneNumber.getUuid(),
 //                (phoneNumber.getValue().replaceAll(

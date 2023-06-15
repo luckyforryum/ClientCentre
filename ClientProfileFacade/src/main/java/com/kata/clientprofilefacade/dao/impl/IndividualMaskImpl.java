@@ -3,8 +3,7 @@ package com.kata.clientprofilefacade.dao.impl;
 import com.kata.clientprofilefacade.dao.IndividualMaskDao;
 import com.kata.clientprofilefacade.dto.IndividualDTO;
 import com.kata.clientprofilefacade.util.IndividualUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -13,9 +12,8 @@ import org.springframework.stereotype.Repository;
  * @author Chong Nguyen
  */
 @Repository
+@Slf4j
 public class IndividualMaskImpl implements IndividualMaskDao {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(IndividualMaskImpl.class);
 
     /**
      * This method first checks that it is null and then masks the last name and changes the full name string
@@ -24,7 +22,7 @@ public class IndividualMaskImpl implements IndividualMaskDao {
      */
     @Override
     public IndividualDTO maskName(IndividualDTO individual) {
-        LOGGER.info("Surname masking",individual);
+        log.info("Surname masking",individual);
 
         IndividualUtils.fullNameConfirmation(individual);
 
@@ -34,7 +32,7 @@ public class IndividualMaskImpl implements IndividualMaskDao {
         StringBuilder shortenedName = new StringBuilder();
 
         for (int i = 1; i < nameParts.length; i++) {
-            if (!(i == 0) && !(nameParts[i].isEmpty()) && !(nameParts[i] == null)) {
+            if ( i != 0 && !nameParts[i].isEmpty() && nameParts[i] != null) {
                 shortenedName.append(nameParts[i] + " ");
             }
         }

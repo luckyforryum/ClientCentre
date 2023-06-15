@@ -1,5 +1,6 @@
 package com.kata.clientprofilefacade.exception.individualexception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,12 +9,12 @@ import org.slf4j.LoggerFactory;
  *
  * @author Chong Nguyen
  */
+@Slf4j
 public class InvalidFullNameException extends RuntimeException {
-    private static final Logger LOGGER = LoggerFactory.getLogger(InvalidFullNameException.class);
 
     public InvalidFullNameException(String message) {
         super(message);
-        LOGGER.error("InvalidFullNameException {}",message);
+        log.error("InvalidFullNameException {}",message);
     }
 
     public InvalidFullNameException(String message, Throwable cause) {

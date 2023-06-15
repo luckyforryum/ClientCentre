@@ -1,5 +1,6 @@
 package com.kata.clientprofilefacade.exception.phonenumberexception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 /**
@@ -7,11 +8,11 @@ import org.slf4j.LoggerFactory;
  *
  * @author Chong Nguyen
  */
+@Slf4j
 public class InvalidPhoneNumberException extends RuntimeException {
-    private static final Logger LOGGER = LoggerFactory.getLogger(InvalidPhoneNumberException.class);
 
     public InvalidPhoneNumberException(String message) {
         super(message);
-        LOGGER.error("InvalidPhoneNumberException {}",message);
+        log.error("InvalidPhoneNumberException {}",message);
     }
 }
