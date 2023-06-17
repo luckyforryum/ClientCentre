@@ -10,5 +10,9 @@ public enum SurnameIndividual {
     Miller,
     Wilson,
     Moore,
-    Taylor
+    Taylor;
+
+    public String toStringSurname() {
+        return this.name();
+    }
 }

@@ -10,5 +10,9 @@ public enum NameIndividual {
     George,
     Oscar,
     Anna,
-    Maria
+    Maria;
+
+    public String toStringName() {
+        return this.name();
+    }
 }

@@ -7,15 +7,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/testData")
+@RequestMapping("/testData/get")
 @AllArgsConstructor
 public class GetTestClient {
 
     private final GenerateUtil generateUtil;
 
 
-    @GetMapping("/get")
-    public void getTestData() {
-        generateUtil.generateIndividual1();
+    @GetMapping("/one")
+    public void getTestDataOne() {
+        generateUtil.generateRandomIndividual();
+    }
+    @GetMapping("/ten")
+    public void getTestDataTen() {
+        generateUtil.generateTenRandomIndividuals();
     }
 }

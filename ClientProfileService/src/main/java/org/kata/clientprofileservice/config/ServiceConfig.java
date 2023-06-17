@@ -13,10 +13,15 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.sql.DataSource;
 import java.util.Properties;
+import java.util.Random;
 
 @Configuration
 @AllArgsConstructor
 public class ServiceConfig {
+    @Bean
+    public Random random() {
+        return new Random();
+    }
 
     @Bean
     public ExceptionRestController exceptionRestController() {
