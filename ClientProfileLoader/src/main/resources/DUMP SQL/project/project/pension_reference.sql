@@ -15,7 +15,7 @@ create table project.pension_reference
     validate_date date,
     document_id   varchar(255)
         constraint fkf114xgakuutf1f2xd905rijnb
-            references project.documents
+            references micro.documents
 );
 
 alter table project.pension_reference

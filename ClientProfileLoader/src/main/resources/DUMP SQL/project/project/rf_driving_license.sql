@@ -22,7 +22,7 @@ create table project.rf_driving_license
     validate_date date,
     document_id   varchar(255)
         constraint fk52e5qedyv4wvop6ufy9veld6b
-            references project.documents
+            references micro.documents
 );
 
 alter table project.rf_driving_license

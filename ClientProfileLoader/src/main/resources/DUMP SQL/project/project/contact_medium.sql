@@ -4,7 +4,7 @@ create table project.contact_medium
         primary key,
     individual_id varchar(255)
         constraint fknse6dyox2ndxq0bgkif959wxq
-            references project.individual
+            references micro.individual
 );
 
 alter table project.contact_medium

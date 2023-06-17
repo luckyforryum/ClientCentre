@@ -8,7 +8,7 @@ create table project.snils_doc
     validate_date date,
     document_id   varchar(255)
         constraint fkapep586mhopp92dp8u9mvr15c
-            references project.documents
+            references micro.documents
 );
 
 alter table project.snils_doc

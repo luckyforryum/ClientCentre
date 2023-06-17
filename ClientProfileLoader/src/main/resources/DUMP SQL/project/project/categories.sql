@@ -5,7 +5,7 @@ create table project.categories
     category           varchar(255),
     driving_license_id varchar(255)
         constraint fk5i0wprrhpqwb13qkk7vq0kv0f
-            references project.rf_driving_license
+            references micro.rf_driving_license
 );
 
 alter table project.categories

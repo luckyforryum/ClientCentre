@@ -17,7 +17,7 @@ create table project.inn_doc
     validate_date date,
     document_id   varchar(255)
         constraint fkrxe0s2akikaf0phc9y1t9ufe0
-            references project.documents
+            references micro.documents
 );
 
 alter table project.inn_doc

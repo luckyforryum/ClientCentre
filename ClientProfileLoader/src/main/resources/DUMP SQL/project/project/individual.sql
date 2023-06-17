@@ -13,13 +13,13 @@ create table project.individual
     surname          varchar(255),
     avatar_id        varchar(255)
         constraint fk495y6vtm1fcju11v2ast8dg0w
-            references project.avatars,
+            references micro.avatars,
     contacts_id      varchar(255)
         constraint fkq68mnj7kvwjhx53ytugm5vnv9
-            references project.contact_medium,
+            references micro.contact_medium,
     documents_id     varchar(255)
         constraint fkfw6ukxf9mrmqpqda5tyn4xhmx
-            references project.documents
+            references micro.documents
 );
 
 alter table project.individual
