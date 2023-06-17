@@ -3,7 +3,6 @@ package org.kata.clientprofileservice.config;
 import lombok.AllArgsConstructor;
 import org.kata.config.ExceptionRestController;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.config.CustomEditorConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -13,9 +12,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.web.client.RestTemplate;
 
 import javax.sql.DataSource;
-import java.beans.PropertyEditor;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 @Configuration
