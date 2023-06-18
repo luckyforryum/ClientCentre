@@ -2,10 +2,7 @@ package org.kata.entity.individual;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 import org.kata.entity.contactmedium.ContactMedium;
 import org.kata.entity.document.Documents;
@@ -20,6 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Table(name = "individual")
 @Entity
+@ToString
 public class Individual {
 
 

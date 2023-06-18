@@ -1,6 +1,10 @@
 package org.kata.clientprofileservice.config;
 
 import lombok.AllArgsConstructor;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.ListSerializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.kata.config.ExceptionRestController;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -12,12 +16,15 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.web.client.RestTemplate;
 
 import javax.sql.DataSource;
-import java.util.Properties;
-import java.util.Random;
+import java.util.*;
 
 @Configuration
 @AllArgsConstructor
 public class ServiceConfig {
+
+
+
+
     @Bean
     public Random random() {
         return new Random();

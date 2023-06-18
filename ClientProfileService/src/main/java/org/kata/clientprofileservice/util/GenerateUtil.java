@@ -34,15 +34,7 @@ public class GenerateUtil {
         this.placeOfBirths = List.of(PlaceOfBirth.values());
     }
 
-
-    public void generateTenRandomIndividuals() {
-        for (int i = 0; i < 10; i++) {
-            generateRandomIndividual();
-        }
-    }
-
-
-    public void generateRandomIndividual() {
+    public Individual generateRandomIndividual() {
 
         int randomIndexPlaceOfBirth = random.nextInt(placeOfBirths.size());
         int randomIndexCountry = random.nextInt(countryOfBirths.size());
@@ -66,12 +58,12 @@ public class GenerateUtil {
                 .build();
 
         Individual individual = modelMapper.map(test, Individual.class);
-        individualRepo.save(individual);
+        return individual;
     }
 
 
 
-    public Date getRandomDate() {
+    protected Date getRandomDate() {
         Calendar calendar = new GregorianCalendar();
         calendar.set(Calendar.YEAR, random.nextInt(50) + 1965);
         calendar.set(Calendar.MONTH, random.nextInt(12));
