@@ -9,12 +9,15 @@ import org.kata.entity.individual.Individual;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
 @AllArgsConstructor
 public class TestDataIndividualImpl implements TestDataIndividual {
-    private final KafkaTemplate<String, String> kafkaTemplate;
+
+    private final KafkaTemplate<String, List<Individual>> kafkaTemplate;
     private final IndividualRepo individualRepo;
     private final GenerateUtil generateUtil;
     private static final String TOPIC = "TestUsers" ;
@@ -25,11 +28,11 @@ public class TestDataIndividualImpl implements TestDataIndividual {
         if (count <= 0) {
             throw new IllegalArgumentException("The number of objects created must be greater than zero.");
         }
-        StringBuilder individuals = new StringBuilder("");
+        List<Individual> individualList = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             Individual individual = individualRepo.save(generateUtil.generateRandomIndividual());
-            individuals.append(individual);
+            individualList.add(individual);
         }
-        kafkaTemplate.send(TOPIC, String.valueOf(individuals));
+        kafkaTemplate.send(TOPIC, individualList);
     }
 }
