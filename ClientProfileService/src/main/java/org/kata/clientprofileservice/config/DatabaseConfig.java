@@ -30,7 +30,6 @@ public class DatabaseConfig {
     @Value("${datasource.scan}")
     private String packageScan;
 
-
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();

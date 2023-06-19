@@ -1,5 +1,7 @@
 package org.kata.clientprofileservice.service;
 
-public interface TestDataIndividual {
+
+
+public interface TestDataIndividualService {
     void createIndividuals(int count);
 }

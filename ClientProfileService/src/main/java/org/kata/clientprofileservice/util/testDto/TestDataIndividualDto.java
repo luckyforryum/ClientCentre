@@ -1,8 +1,10 @@
-package org.kata.clientprofileservice.util;
+package org.kata.clientprofileservice.util.testDto;
 
 import lombok.*;
+import org.kata.entity.individual.Address;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.Date;
 
 
@@ -12,7 +14,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TestDataIndividual {
+public class TestDataIndividualDto {
 
     private String icp;
     private String name;
@@ -23,10 +25,14 @@ public class TestDataIndividual {
     private String fullName;
     private String gender;
     private String placeOfBirth;
+    private Collection<Address> address;
 
+    {
+        fullName = name + " " + patronymic + " " + surname;
+    }
 
-    public static class TestDataIndividualBuilder {
-        public TestDataIndividualBuilder icp(String icp) {
+    public static class TestDataIndividualDtoBuilder {
+        public TestDataIndividualDtoBuilder icp(String icp) {
             if (!validateIndividual(icp)) {
                 throw new IllegalArgumentException("Sorry! TestDataIndividual objects can't be build without required details.");
             }

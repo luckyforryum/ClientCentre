@@ -1,4 +1,4 @@
-package org.kata.clientprofileservice.util.enums;
+package org.kata.clientprofileservice.util.enums.individuaInfo;
 
 public enum SurnameIndividual {
     Smith,
