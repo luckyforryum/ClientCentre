@@ -9,6 +9,7 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
+
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -24,6 +25,7 @@ public class LoaderConfig {
     private String URL_DB;
     @Value("${spring.datasource.driver-class-name}")
     private String DRIVER_DB;
+
 
     @Bean
     public DataSource dataSource() {
