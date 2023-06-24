@@ -1,10 +1,10 @@
-package com.kata.clientprofileavatar;
+package com.kata.clientprofileupdate;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ClientProfileAvatarApplicationTests {
+class ClientProfileUpdateApplicationTests {
 
     @Test
     void contextLoads() {

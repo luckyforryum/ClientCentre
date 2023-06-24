@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.kata.dto.response.RFPassportDocResponseDto;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,7 +44,7 @@ public class RFPassportDocController {
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = RFPassportDocErrorForSwagger.class)))
             })
-    public RFPassportDocDTO maskPassport(@Valid @RequestBody RFPassportDocDTO rfPassportDoc) {
+    public RFPassportDocResponseDto maskPassport(@Valid @RequestBody RFPassportDocResponseDto rfPassportDoc) {
         return rfPassportDocMaskService.maskPassport(rfPassportDoc);
     }
 }

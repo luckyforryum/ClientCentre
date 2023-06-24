@@ -1,5 +1,6 @@
 package com.kata.clientprofilefacade.controller;
 
+import com.kata.clientprofilefacade.dao.impl.TokenCheck;
 import com.kata.clientprofilefacade.dto.IndividualDTO;
 import com.kata.clientprofilefacade.service.IndividualMaskService;
 import com.kata.clientprofilefacade.util.IndividualErrorForSwagger;
@@ -11,7 +12,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.FileInputStream;
 
 @RestController
 @RequestMapping("/api")
@@ -20,8 +24,12 @@ import org.springframework.web.bind.annotation.*;
 public class IndividualController {
 
     private final IndividualMaskService individualMaskService;
+    private final TokenCheck tokenCheck;
 
-    @PostMapping("/maskFullName")
+
+
+
+    @PostMapping("/maskFullName/{uuidInd}")
     @Operation(
             summary = "Full name masking",
             responses = {
@@ -39,8 +47,15 @@ public class IndividualController {
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = IndividualErrorForSwagger.class)))
             })
-    public IndividualDTO maskFullName(@Valid @RequestBody IndividualDTO individual) {
+    public ResponseEntity<?> maskFullName(@RequestHeader(value = "Authorization", required = false) String authorizationHeader, @PathVariable("uuidInd") String uuid, @Valid @RequestBody IndividualDTO individual) {
 //        individualMaskService.maskName(individual);
-        return individualMaskService.maskName(individual);
+//        tokenCheck.giveDocument(uuid,authorizationHeader);
+//        tokenCheck.checkUser(uuid);
+        return tokenCheck.giveDocument(authorizationHeader,uuid);
+//        return individualMaskService.maskName(individual);
     }
+
+
+
+
 }
