@@ -1,7 +1,7 @@
 package com.kata.clientprofilefacade.controller;
 
-import com.kata.clientprofilefacade.dao.impl.TokenCheck;
 import com.kata.clientprofilefacade.dto.IndividualDTO;
+import com.kata.clientprofilefacade.service.GiveDocumentsService;
 import com.kata.clientprofilefacade.service.IndividualMaskService;
 import com.kata.clientprofilefacade.util.IndividualErrorForSwagger;
 import com.kata.clientprofilefacade.util.IndividualSuccessForSwagger;
@@ -23,9 +23,7 @@ import java.io.FileInputStream;
 @Tag(name = "Controller for full name masking")
 public class IndividualController {
 
-    private final IndividualMaskService individualMaskService;
-    private final TokenCheck tokenCheck;
-
+    private final GiveDocumentsService giveDocumentsService;
 
 
 
@@ -47,12 +45,8 @@ public class IndividualController {
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = IndividualErrorForSwagger.class)))
             })
-    public ResponseEntity<?> maskFullName(@RequestHeader(value = "Authorization", required = false) String authorizationHeader, @PathVariable("uuidInd") String uuid, @Valid @RequestBody IndividualDTO individual) {
-//        individualMaskService.maskName(individual);
-//        tokenCheck.giveDocument(uuid,authorizationHeader);
-//        tokenCheck.checkUser(uuid);
-        return tokenCheck.giveDocument(authorizationHeader,uuid);
-//        return individualMaskService.maskName(individual);
+    public ResponseEntity<?> maskFullName(@RequestHeader(value = "Authorization", required = false) String token, @PathVariable("uuidInd") String uuid) {
+    return giveDocumentsService.giveDocument(token, uuid);
     }
 
 
