@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
+
 import static com.kata.clientprofilefacade.util.PhoneNumberConstants.PHONE_NUMBER_FORMAT;
 
 @Getter
@@ -14,6 +16,7 @@ import static com.kata.clientprofilefacade.util.PhoneNumberConstants.PHONE_NUMBE
 @AllArgsConstructor
 @NoArgsConstructor
 public class PhoneNumberDTO {
+
     @NotEmpty
     @NotBlank
     @NotNull

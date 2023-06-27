@@ -5,6 +5,9 @@ import com.kata.clientprofilefacade.exception.rfpassportdocexception.InvalidPass
 import lombok.extern.slf4j.Slf4j;
 import org.kata.dto.response.RFPassportDocResponseDto;
 
+import com.kata.clientprofilefacade.dto.RFPassportDocDTO;
+
+
 /**
  * This class provides helper functions for RFPassportDoc class
  *
@@ -18,6 +21,7 @@ public class RFPassportDocUtils {
      * @param rfPassportDoc Your RFPassportDoc object where there is a series and passport number
      */
     public static void checkPassport(RFPassportDocResponseDto rfPassportDoc) {
+
         if (rfPassportDoc.getSeries() == null || rfPassportDoc.getSeries().isEmpty()) {
             log.error("Passport series is null or empty");
             throw new InvalidPassportSeriesException("Passport series cannot be null or empty");
