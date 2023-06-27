@@ -1,8 +1,6 @@
 package com.kata.clientprofilefacade.controller;
 
-import com.kata.clientprofilefacade.dto.IndividualDTO;
-import com.kata.clientprofilefacade.service.GiveDocumentsService;
-import com.kata.clientprofilefacade.service.IndividualMaskService;
+import com.kata.clientprofilefacade.service.GetDocumentsService;
 import com.kata.clientprofilefacade.util.IndividualErrorForSwagger;
 import com.kata.clientprofilefacade.util.IndividualSuccessForSwagger;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,24 +8,21 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.FileInputStream;
 
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor
 @Tag(name = "Controller for full name masking")
-public class IndividualController {
+public class DocumentsController {
 
-    private final GiveDocumentsService giveDocumentsService;
+    private final GetDocumentsService getDocumentsService;
 
 
-
-    @PostMapping("/maskFullName/{uuidInd}")
+    @PostMapping("/documents/{uuidInd}")
     @Operation(
             summary = "Full name masking",
             responses = {
@@ -46,7 +41,7 @@ public class IndividualController {
                                     schema = @Schema(implementation = IndividualErrorForSwagger.class)))
             })
     public ResponseEntity<?> maskFullName(@RequestHeader(value = "Authorization", required = false) String token, @PathVariable("uuidInd") String uuid) {
-    return giveDocumentsService.giveDocument(token, uuid);
+    return getDocumentsService.giveDocuments(token, uuid);
     }
 
 

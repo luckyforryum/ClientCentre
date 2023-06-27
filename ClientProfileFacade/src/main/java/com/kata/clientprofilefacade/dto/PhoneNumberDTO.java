@@ -2,7 +2,10 @@ package com.kata.clientprofilefacade.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import static com.kata.clientprofilefacade.util.PhoneNumberConstants.PHONE_NUMBER_FORMAT;
 
@@ -11,7 +14,6 @@ import static com.kata.clientprofilefacade.util.PhoneNumberConstants.PHONE_NUMBE
 @AllArgsConstructor
 @NoArgsConstructor
 public class PhoneNumberDTO {
-
     @NotEmpty
     @NotBlank
     @NotNull

@@ -1,6 +1,5 @@
 package com.kata.clientprofilefacade.util;
 
-import com.kata.clientprofilefacade.dto.RFPassportDocDTO;
 import com.kata.clientprofilefacade.exception.rfpassportdocexception.InvalidPassportNumberException;
 import com.kata.clientprofilefacade.exception.rfpassportdocexception.InvalidPassportSeriesException;
 import lombok.extern.slf4j.Slf4j;
