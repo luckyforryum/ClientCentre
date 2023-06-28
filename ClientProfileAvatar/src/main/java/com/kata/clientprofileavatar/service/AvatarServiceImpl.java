@@ -76,5 +76,8 @@ public class AvatarServiceImpl implements AvatarService {
     public void updateActive(Integer id, boolean active) {
         avatarDao.updateActive(id,active);
     }
-
+    @Override
+    public List<Avatar> getCheckingDuplicateActive(MultipartFile file){
+       return avatarDao.getCheckingDuplicateActive(file);
+    }
 }

@@ -26,4 +26,6 @@ public interface AvatarService {
     void deleteAvatarByProfileIdentification(String profileIdentification);
     @Transactional
     void updateActive(Integer id, boolean active);
+    @Transactional
+    public List<Avatar> getCheckingDuplicateActive(MultipartFile file);
 }

@@ -173,4 +173,14 @@ public class AvatarController {
             throw new IOException("Удаление изображения прошло неудачно");
         }
     }
+    @GetMapping("/getCheck")
+    public ResponseEntity<List<Avatar>> checkingDuplicateActive(@RequestParam("file") MultipartFile file) throws IOException {
+        try {
+            return ResponseEntity.ok(service.getCheckingDuplicateActive(file));
+        } catch (Exception e) {
+            throw new IOException("Поиск прошел неудачно");
+        }
+    }
+
+
 }

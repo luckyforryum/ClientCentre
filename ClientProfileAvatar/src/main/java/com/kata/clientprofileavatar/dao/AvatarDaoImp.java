@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,7 +35,7 @@ public class AvatarDaoImp implements AvatarDao {
                 .name(file.getOriginalFilename())
                 .fileSize((int) file.getSize())
                 .byteSize(file.getBytes()).profileIdentification(profileIdentification).active(active)
-                .md5(String.valueOf(Hashing.md5().hashString(file.getOriginalFilename(), Charsets.UTF_8)))
+                .md5(String.valueOf(Hashing.md5().hashString(Arrays.toString(file.getBytes()), Charsets.UTF_8)))
                 .build();
         log.info("преобразования мультифайла прошло успешно");
         List<Avatar>avatarList=getAvatarByActiveAndProfileIdentification(profileIdentification, active);
@@ -61,7 +62,7 @@ public class AvatarDaoImp implements AvatarDao {
                 .name(file.getOriginalFilename())
                 .fileSize((int) file.getSize())
                 .byteSize(file.getBytes()).profileIdentification(avatar.getProfileIdentification())
-                .md5(String.valueOf(Hashing.md5().hashString(file.getOriginalFilename(), Charsets.UTF_8)))
+                .md5(String.valueOf(Hashing.md5().hashString(Arrays.toString(file.getBytes()), Charsets.UTF_8)))
                 .build();
         log.info("изображение направлено в БД для обновления");
         entityManager.merge(avatarUpdate);
@@ -75,7 +76,7 @@ public class AvatarDaoImp implements AvatarDao {
                 .name(file.getOriginalFilename())
                 .fileSize((int) file.getSize())
                 .byteSize(file.getBytes()).profileIdentification(avatar.getProfileIdentification()).active(active)
-                .md5(String.valueOf(Hashing.md5().hashString(file.getOriginalFilename(), Charsets.UTF_8)))
+                .md5(String.valueOf(Hashing.md5().hashString(Arrays.toString(file.getBytes()), Charsets.UTF_8)))
                 .build();
         log.info("изображение направлено в БД для обновления");
         List<Avatar>avatarList=getAvatarByActiveAndProfileIdentification(avatar.getProfileIdentification(), active);
@@ -103,7 +104,7 @@ public class AvatarDaoImp implements AvatarDao {
                 .name(avatar.getName())
                 .fileSize(avatar.getFileSize())
                 .byteSize(avatar.getByteSize()).profileIdentification(avatar.getProfileIdentification()).active(active)
-                .md5(String.valueOf(Hashing.md5().hashString(avatar.getName(), Charsets.UTF_8)))
+                .md5(String.valueOf(Hashing.md5().hashString(Arrays.toString(avatar.getByteSize()), Charsets.UTF_8)))
                 .build();
 
         List<Avatar> avatarList = getAvatarByActiveAndProfileIdentification(avatar.getProfileIdentification(), active);
@@ -174,20 +175,35 @@ public class AvatarDaoImp implements AvatarDao {
         Avatar avatar=getAvatarById(id);
         log.info("аватар удален");
         entityManager.remove(avatar);
-        if (avatar.isActive()==true&&getListAvatarsByProfileIdentification(avatar.getProfileIdentification()).size()!=0){
-            getListAvatarsByProfileIdentification(avatar.getProfileIdentification()).get(0).setActive(true);
-            log.info("активный аватар заменен");
-        }
+        refactorOfDeleteActivity(avatar);
     }
     public void deleteAvatarByProfileIdentification(String profileIdentification) {
         log.info("аватар направлен на удаление");
         Avatar avatar=getAvatarByIdAndActive(profileIdentification);
         entityManager.remove(avatar);
         log.info("аватар удален");
+        refactorOfDeleteActivity(avatar);
+    }
+    //Метод поиска аналагичных аватаров
+    @SneakyThrows
+    public List<Avatar> getCheckingDuplicateActive(MultipartFile file) {
+        String md5=String.valueOf(Hashing.md5().hashString(Arrays.toString(file.getBytes()), Charsets.UTF_8));
+        log.info("Производится поиск совподений в БД по Аватару ");
+        List<Avatar>resultAvatar=entityManager.createQuery("select avatar from Avatar avatar where avatar.md5 = :md5", Avatar.class)
+                .setParameter("md5", md5).getResultList();
+        if (resultAvatar.size()!=0){
+            log.info("Анологичные изображения получены");
+        }else {
+            log.info("Совподения не найдены");
+        }
+        return resultAvatar;
+    }
+    public void refactorOfDeleteActivity(Avatar avatar){
         if (avatar.isActive()==true&&getListAvatarsByProfileIdentification(avatar.getProfileIdentification()).size()!=0){
             getListAvatarsByProfileIdentification(avatar.getProfileIdentification()).get(0).setActive(true);
             log.info("активный аватар заменен");
         }
     }
+
 
 }
