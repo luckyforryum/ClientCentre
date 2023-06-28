@@ -19,6 +19,8 @@ import com.kata.clientprofileavatar.service.AvatarService;
 import java.io.IOException;
 import java.util.List;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
 @RestController
 @RequestMapping("/avatars")
 @Tag(name = "Контроллеры", description = "Все методы для работы саватаром")
@@ -26,10 +28,7 @@ import java.util.List;
 public class AvatarController {
     private final AvatarService service;
     //сохранение аватара
-    @PostMapping(
-            path = "/addAvatar",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
-    )
+    @PostMapping(path = "/addAvatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "сохранение в БД аватара")
     @ApiResponses({
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Avatar.class), mediaType = "application/json") }),
@@ -72,7 +71,7 @@ public class AvatarController {
             throw new IOException("Обновления изображения с "+id+" прошло неудачно");
         }
     }
-    @PatchMapping( path = "/updateActive", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PatchMapping( "/updateActive")
     @Operation(summary = "Изменение активности аватара")
     @ApiResponses({
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Avatar.class), mediaType = "application/json") }),
@@ -173,10 +172,15 @@ public class AvatarController {
             throw new IOException("Удаление изображения прошло неудачно");
         }
     }
-    @GetMapping("/getCheck")
-    public ResponseEntity<List<Avatar>> checkingDuplicateActive(@RequestParam("file") MultipartFile file) throws IOException {
+    @PostMapping(path = "/checkingDuplicateAvatar",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "запрос дубилкатов аватара")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Avatar.class), mediaType = "application/json") }),
+            @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema(defaultValue = "Поиск прошел неудачно")) }),
+            @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
+    public ResponseEntity<List<Avatar>> checkingDuplicateAvatar(@RequestParam("file") MultipartFile file) throws IOException {
         try {
-            return ResponseEntity.ok(service.getCheckingDuplicateActive(file));
+            return ResponseEntity.ok(service.getCheckingDuplicateAvatars(file));
         } catch (Exception e) {
             throw new IOException("Поиск прошел неудачно");
         }
