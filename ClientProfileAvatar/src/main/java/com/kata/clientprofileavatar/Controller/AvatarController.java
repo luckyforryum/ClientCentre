@@ -171,7 +171,7 @@ public class AvatarController {
             throw new IOException("Удаление изображения прошло неудачно");
         }
     }
-    @PostMapping(path = "/checkingDuplicateAvatar",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path = "/Duplicate/checkingDuplicateAvatar",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "запрос дубилкатов аватара")
     @ApiResponses({
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Avatar.class), mediaType = "application/json") }),
@@ -185,7 +185,7 @@ public class AvatarController {
         }
     }
 
-    @PostMapping(path = "/DuplicateAvatar",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path = "/Duplicate/PercentAvatar",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "сравнение аватаров на совподение в %")
     @ApiResponses({
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Integer.class), mediaType = "application/json") }),
