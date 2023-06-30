@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,19 +33,7 @@ public class AvatarDaoImp implements AvatarDao {
     @SneakyThrows
     @Transactional
     public void addAvatarActive(MultipartFile file, String profileIdentification, boolean active) {
-/*        Avatar avatar = Avatar.builder().uuid(UUID.randomUUID().toString())
-                .name(file.getOriginalFilename())
-                .fileSize((int) file.getSize())
-                .byteSize(file.getBytes()).profileIdentification(profileIdentification).active(active)
-                .md5(String.valueOf(Hashing.md5().hashString(Arrays.toString(file.getBytes()), Charsets.UTF_8)))
-                .build();
-        log.info("преобразования мультифайла прошло успешно");
-        refactorActivity(avatar);
-        entityManager.merge(avatar);*/
-        Avatar avatar=new Avatar();
-        updateAvatarDefolt(file,avatar, active);
-        log.info("аватар сохранен");
-
+        creatAvatarAdd(file,new Avatar(), active, profileIdentification);
     }
 
     //методы изменения аватара
@@ -55,17 +42,14 @@ public class AvatarDaoImp implements AvatarDao {
     public void updateAvatar(MultipartFile file, Integer id) {
         Avatar avatar = getAvatarById(id);
         log.info("Аватар из базы получен");
-        updateAvatarDefolt(file, avatar, avatar.isActive());
-        log.info("Аватар обновлен");
+        creatAvatarAdd(file, avatar, avatar.isActive(),null);
     }
 
     @SneakyThrows
     public void updateAvatarActive(MultipartFile file, Integer id, boolean active) {
         Avatar avatar = getAvatarById(id);
         log.info("Аватар из базы получен");
-        log.info("изображение направлено в БД для обновления");
-        updateAvatarDefolt(file, avatar, active);
-        log.info("аватар сохранен");
+        creatAvatarAdd(file, avatar, active,null);
     }
 
     @SneakyThrows
@@ -73,9 +57,7 @@ public class AvatarDaoImp implements AvatarDao {
         Avatar avatar = getAvatarById(id);
         log.info("Аватар из базы получен");
         avatar.setActive(active);
-        log.info("изображение направлено в БД для обновления");
-        updateAvatarDefolt(null, avatar, active);
-        log.info("аватар сохранен");
+        creatAvatarAdd(null, avatar, active,null);
     }
 
     // методы получения аватара
@@ -99,6 +81,7 @@ public class AvatarDaoImp implements AvatarDao {
         query.setParameter("uuid", uuid);
         log.info("Аватар из базы получен");
         return (Avatar) query.getSingleResult();
+
     }
 
     @Override
@@ -116,20 +99,26 @@ public class AvatarDaoImp implements AvatarDao {
 
     public List<Avatar> getAvatarByActiveAndProfileIdentification(String profileIdentification, boolean active) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        log.info("Формирование запроса  для поиска");
         CriteriaQuery<Avatar> query = builder.createQuery(Avatar.class);
         Root<Avatar> root = query.from(Avatar.class);
+        log.info("Поиск Аватара по статусу и идентификатору пользователя");
         query.select(root).where(builder.equal(root.get("active"), active), builder.equal(root.get("profileIdentification"), profileIdentification));
         TypedQuery<Avatar> typedQuery = entityManager.createQuery(query);
+        log.info("Данные получены");
         return typedQuery.getResultList();
     }
 
     public Avatar getAvatarByIdAndActive(String profileIdentification) {
         Boolean active = true;
+        log.info("Формирование запроса  для поиска");
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Avatar> query = builder.createQuery(Avatar.class);
         Root<Avatar> root = query.from(Avatar.class);
         query.select(root).where(builder.equal(root.get("active"), active), builder.equal(root.get("profileIdentification"), profileIdentification));
+        log.info("Поиск Аватара по статусу Тру");
         TypedQuery<Avatar> typedQuery = entityManager.createQuery(query);
+        log.info("Данные получены");
         return typedQuery.getSingleResult();
     }
 
@@ -165,40 +154,64 @@ public class AvatarDaoImp implements AvatarDao {
         }
         return resultAvatar;
     }
+    @SneakyThrows
+    public int CheckingDuplicateAvatars(MultipartFile file, String profileIdentification) {
+        byte[]image1=getAvatarByIdAndActive(profileIdentification).getByteSize();
+        log.info("Изображение из бд получено");
+        byte[]image2= file.getBytes();
+        log.info("мультифаил приобразован");
+        double dotProduct = 0.0;
+        double norm1 = 0.0;
+        double norm2 = 0.0;
+        for (int i = 0; i < image1.length; i++) {
+            int pixel1 = image1[i] & 0xff; // convert byte to unsigned int
+            int pixel2 = image2[i] & 0xff;
 
+            dotProduct += pixel1 * pixel2;
+            norm1 += pixel1 * pixel1;
+            norm2 += pixel2 * pixel2;
+        }
+        double similarity = dotProduct / (Math.sqrt(norm1) * Math.sqrt(norm2));
+        log.info("процент определен");
+        return (int) (similarity * 100);
+    }
     //Внутриние мотоды обработки
-    public void refactorOfDeleteActivity(Avatar avatar) {
+    private void refactorOfDeleteActivity(Avatar avatar) {
         if (avatar.isActive() == true && getListAvatarsByProfileIdentification(avatar.getProfileIdentification()).size() != 0) {
             getListAvatarsByProfileIdentification(avatar.getProfileIdentification()).get(0).setActive(true);
             log.info("активный аватар заменен");
         }
     }
 
-    public void refactorActivity(Avatar avatar) {
+    private void refactorActivity(Avatar avatar) {
         List<Avatar> avatarList = getAvatarByActiveAndProfileIdentification(avatar.getProfileIdentification(), avatar.isActive());
         if (avatarList.size() != 0 && avatar.isActive() == true) {
             for (Avatar avatar1 : avatarList) {
                 avatar1.setActive(false);
                 entityManager.merge(avatar1);
             }
+            log.info("активный аватар заменен");
         }
     }
 
-    public void updateAvatarDefolt(MultipartFile file, Avatar avatar, boolean active) throws IOException {
-        log.info("изображение направлено в БД для обновления");
+    private void creatAvatarAdd(MultipartFile file, Avatar avatar, boolean active, String profileIdentification) throws IOException {
+        log.info("Данные для формирования аватара получены");
         Avatar avatarUpdate = Avatar.builder()
                 .uuid(avatar==null?avatar.getUuid():UUID.randomUUID().toString())
                 .name(file == null ?avatar.getName(): file.getOriginalFilename())
                 .fileSize(file == null ? avatar.getFileSize() : (int) file.getSize())
                 .byteSize(file == null ? avatar.getByteSize() : file.getBytes())
-                .profileIdentification(avatar.getProfileIdentification())
+                .profileIdentification(profileIdentification==null?avatar.getProfileIdentification():profileIdentification)
                 .active(active)
                 .md5(file == null ? avatar.getMd5() : String.valueOf(Hashing.md5().hashString(Arrays.toString(file.getBytes()), Charsets.UTF_8)))
                 .build();
+        log.info("преобразования мультифайла прошло успешно");
         if (avatar.getId()!=null) {
             avatarUpdate.setId(avatar.getId());
+            log.info("Аватару присвоен id для обновления информации в БД");
         }
         refactorActivity(avatarUpdate);
         entityManager.merge(avatarUpdate);
+        log.info("Данные по Аватару сохранены в БД");
     }
 }

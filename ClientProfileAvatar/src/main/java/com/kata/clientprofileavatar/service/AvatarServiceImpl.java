@@ -80,4 +80,9 @@ public class AvatarServiceImpl implements AvatarService {
     public List<Avatar> getCheckingDuplicateAvatars(MultipartFile file){
        return avatarDao.getCheckingDuplicateAvatars(file);
     }
+
+    @Override
+    public int CheckingDuplicateAvatars(MultipartFile file,String profileIdentification) {
+        return avatarDao.CheckingDuplicateAvatars(file,profileIdentification);
+    }
 }

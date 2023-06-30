@@ -19,7 +19,6 @@ import com.kata.clientprofileavatar.service.AvatarService;
 import java.io.IOException;
 import java.util.List;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @RestController
 @RequestMapping("/avatars")
@@ -183,6 +182,20 @@ public class AvatarController {
             return ResponseEntity.ok(service.getCheckingDuplicateAvatars(file));
         } catch (Exception e) {
             throw new IOException("Поиск прошел неудачно");
+        }
+    }
+
+    @PostMapping(path = "/DuplicateAvatar",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "сравнение аватаров на совподение в %")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Integer.class), mediaType = "application/json") }),
+            @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema(defaultValue = "Сравнение прошло неудачно")) }),
+            @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
+    public int DuplicateAvatar(@RequestParam("file") MultipartFile file,@RequestParam("profileIdentification") String profileIdentification) throws IOException {
+        try {
+            return service.CheckingDuplicateAvatars(file, String.valueOf(profileIdentification));
+        } catch (Exception e) {
+            throw new IOException("Сравнение прошло неудачно");
         }
     }
 

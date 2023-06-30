@@ -20,5 +20,6 @@ public interface AvatarDao {
     Avatar getAvatarByIdAndActive(String profileIdentification);
     void deleteAvatarByProfileIdentification(String profileIdentification);
     void updateActive(Integer id, boolean active);
-    public List<Avatar> getCheckingDuplicateAvatars(MultipartFile file);
+    List<Avatar> getCheckingDuplicateAvatars(MultipartFile file);
+    int CheckingDuplicateAvatars(MultipartFile file, String profileIdentification);
 }
