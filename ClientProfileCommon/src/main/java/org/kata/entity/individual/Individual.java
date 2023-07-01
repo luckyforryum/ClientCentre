@@ -47,11 +47,11 @@ public class Individual {
     @Temporal(TemporalType.DATE)
     private Date birthDate;
 
-    @Column(name = "documents")
+    @JoinColumn(name = "documents")
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Documents documents;
 
-    @Column(name = "contacts")
+    @JoinColumn (name = "contacts")
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ContactMedium contacts;
 

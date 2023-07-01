@@ -44,7 +44,6 @@ public class DocumentController {
         if (existingDocument == null) {
             return ResponseEntity.notFound().build();
         }
-
         existingDocument.setUuid(document.getUuid());
         Documents updatedDocument = documentService.addDocument(existingDocument).getBody();
         return ResponseEntity.ok(updatedDocument);

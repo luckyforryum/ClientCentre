@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 public class DocumentService {
     private final RestTemplate restTemplate;
-    private final String commonMicroserviceUrl; // URL микросервиса Common
+    private final String commonMicroserviceUrl;
     private final Logger logger = LoggerFactory.getLogger(DocumentService.class);
 
 
@@ -51,7 +51,8 @@ public class DocumentService {
                     url,
                     HttpMethod.GET,
                     null,
-                    new ParameterizedTypeReference<List<Documents>>() {}
+                    new ParameterizedTypeReference<List<Documents>>() {
+                    }
             );
             if (response.getStatusCode().is2xxSuccessful()) {
                 return response.getBody();

@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 @AllArgsConstructor
 public class AvatarService {
     private final RestTemplate restTemplate;
-    private final String commonMicroserviceUrl; // URL микросервиса Common
+    private final String commonMicroserviceUrl;
     private final Logger logger = LoggerFactory.getLogger(AvatarService.class);
 
 
