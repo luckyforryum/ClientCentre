@@ -58,7 +58,8 @@ public class RestController {
         System.out.println(ResponseEntity.ok(token1));
         return ResponseEntity.ok(token1);
     }
-    
+
+
 
 //    @GetMapping("/{uuidInd}")
 //    public DocumentsResponseDto getDocuments(@PathVariable("uuidInd") String uuid) {

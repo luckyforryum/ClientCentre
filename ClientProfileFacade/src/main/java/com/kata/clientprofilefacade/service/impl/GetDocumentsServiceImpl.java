@@ -13,7 +13,7 @@ public class GetDocumentsServiceImpl implements GetDocumentsService {
     private final GetDocumentsDao getDocumentsDao;
 
     @Override
-    public ResponseEntity<?> giveDocuments(String token, String uuid) {
+    public <T> ResponseEntity<T> giveDocuments(String token, String uuid) {
         return getDocumentsDao.giveDocuments(token,uuid);
     }
 }

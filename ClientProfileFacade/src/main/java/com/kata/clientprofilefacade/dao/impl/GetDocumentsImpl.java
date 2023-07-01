@@ -2,8 +2,8 @@ package com.kata.clientprofilefacade.dao.impl;
 
 import com.kata.clientprofilefacade.dao.GetDocumentsDao;
 import com.kata.clientprofilefacade.service.MaskingService;
-import com.kata.clientprofilefacade.util.CheckDocsInDB;
-import com.kata.clientprofilefacade.util.TokenCheckUtils;
+import com.kata.clientprofilefacade.service.impl.UserCheck;
+import com.kata.clientprofilefacade.service.impl.ValidateToken;
 import lombok.AllArgsConstructor;
 import org.kata.dto.response.DocumentsResponseDto;
 import org.springframework.http.*;
@@ -15,30 +15,31 @@ import org.springframework.stereotype.Repository;
 @AllArgsConstructor
 public class GetDocumentsImpl implements GetDocumentsDao {
 
-
+    private final ValidateToken validateToken;
+    private final UserCheck userCheck;
     private final MaskingService maskingService;
 
 
-    public ResponseEntity<?> giveDocuments(String token, String uuid) {
-        if (token == null || token.isEmpty()) {
-            return CheckDocsInDB.getDocumentsById(uuid).getStatusCode() == HttpStatus.OK ?
-                    ResponseEntity.ok("Да, такой документ есть") :
-                    ResponseEntity.ok("Нет, такого документа есть");
 
-        } else if (TokenCheckUtils.checkToken(token) == HttpStatus.OK) {
+    public <T> ResponseEntity<T> giveDocuments(String token, String uuid) {
+        if (token == null || token.isEmpty()) {
+            return userCheck.getDocumentsById(uuid).getStatusCode() == HttpStatus.OK ?
+                    ResponseEntity.ok((T) "Да, такой документ есть") :
+                    ResponseEntity.ok((T) "Нет, такого документа есть");
+
+        } else if (validateToken.checkToken(token) == HttpStatus.OK) {
             if (token.startsWith("Bearer ")) {
-                DocumentsResponseDto documentsResponseDto = (DocumentsResponseDto) CheckDocsInDB.getDocumentsById(uuid).getBody();
+                DocumentsResponseDto documentsResponseDto = (DocumentsResponseDto) userCheck.getDocumentsById(uuid).getBody();
                 maskingService.maskPassport(documentsResponseDto);
-                return ResponseEntity.ok(documentsResponseDto);
+                return ResponseEntity.ok((T) documentsResponseDto);
             } else if (token.startsWith("JwtBearer ")) {
-                DocumentsResponseDto documentsResponseDto = (DocumentsResponseDto) CheckDocsInDB.getDocumentsById(uuid).getBody();
-//                List<RFPassportDocResponseDto> rfPassportDocs = (List<RFPassportDocResponseDto>) documentsResponseDto.getRfPassportDocs();
-                return ResponseEntity.ok(documentsResponseDto);
+                DocumentsResponseDto documentsResponseDto = (DocumentsResponseDto) userCheck.getDocumentsById(uuid).getBody();
+                return ResponseEntity.ok((T) documentsResponseDto);
             } else {
-                return new ResponseEntity<>("Токен такого типа не принимается", TokenCheckUtils.checkToken(token));
+                return (ResponseEntity<T>) new ResponseEntity<>("Токен такого типа не принимается", validateToken.checkToken(token));
             }
         } else {
-            return new ResponseEntity<>("Токен неверный", TokenCheckUtils.checkToken(token));
+            return (ResponseEntity<T>) new ResponseEntity<>("Токен неверный", validateToken.checkToken(token));
         }
     }
 

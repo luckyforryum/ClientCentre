@@ -22,9 +22,9 @@ public class DocumentsController {
     private final GetDocumentsService getDocumentsService;
 
 
-    @PostMapping("/documents/{uuidInd}")
+    @GetMapping("/documents/{uuidInd}")
     @Operation(
-            summary = "Full name masking",
+            summary = "Get documents by uuid",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -40,7 +40,7 @@ public class DocumentsController {
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = IndividualErrorForSwagger.class)))
             })
-    public ResponseEntity<?> maskFullName(@RequestHeader(value = "Authorization", required = false) String token, @PathVariable("uuidInd") String uuid) {
+    public <T> ResponseEntity<T> getDocuments(@RequestHeader(value = "Authorization", required = false) String token, @PathVariable("uuidInd") String uuid) {
     return getDocumentsService.giveDocuments(token, uuid);
     }
 

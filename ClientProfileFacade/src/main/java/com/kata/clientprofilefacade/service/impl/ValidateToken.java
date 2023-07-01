@@ -1,13 +1,20 @@
-package com.kata.clientprofilefacade.util;
+package com.kata.clientprofilefacade.service.impl;
 
 import lombok.AllArgsConstructor;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-public class TokenCheckUtils {
 
-    private static final RestTemplate restTemplate = new RestTemplate();
-    public static HttpStatus checkToken(String token) {
+@Component
+@AllArgsConstructor
+public class ValidateToken {
+
+    private final RestTemplate restTemplate;
+
+    public  HttpStatus checkToken(String token) {
         ResponseEntity<String> response = sendToken(token);
         HttpStatus statusCode = (HttpStatus) response.getStatusCode();
         if (statusCode == HttpStatus.OK) {
@@ -20,10 +27,9 @@ public class TokenCheckUtils {
     }
 
 
-    public static ResponseEntity<String> sendToken(String token) {
+    public ResponseEntity<String> sendToken(String token) {
 
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
+
         String[] splitToken = token.split(" ");
 
         String url = "http://127.0.0.1:1111/documents/checktoken?token=" + splitToken[1]; // Замените на фактический URL другого микросервиса
@@ -38,5 +44,4 @@ public class TokenCheckUtils {
         }
         return response;
     }
-
 }

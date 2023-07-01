@@ -4,5 +4,5 @@ import org.kata.dto.response.DocumentsResponseDto;
 import org.springframework.http.ResponseEntity;
 
 public interface GetDocumentsDao {
-    ResponseEntity<?> giveDocuments(String token, String uuid);
+    <T> ResponseEntity<T> giveDocuments(String token, String uuid);
 }
