@@ -17,9 +17,9 @@ public interface AvatarDao {
     List<Avatar> getListAvatarsByProfileIdentification(String profileIdentification);
     void addAvatarActive(MultipartFile file,String profileIdentification,boolean active);
     void updateAvatarActive(MultipartFile file, Integer id, boolean active);
-    Avatar getAvatarByIdAndActive(String profileIdentification);
+    Avatar getAvatarByProfileIdentificationAndActive(String profileIdentification);
     void deleteAvatarByProfileIdentification(String profileIdentification);
     void updateActive(Integer id, boolean active);
-    List<Avatar> getCheckingDuplicateAvatars(MultipartFile file);
-    int CheckingDuplicateAvatars(MultipartFile file, String profileIdentification);
+    List<Avatar> getDuplicateAvatars(MultipartFile file);
+    Integer сheckPercentDuplicateAvatars(MultipartFile file, String profileIdentification);
 }

@@ -27,6 +27,6 @@ public interface AvatarService {
     @Transactional
     void updateActive(Integer id, boolean active);
     @Transactional
-    public List<Avatar> getCheckingDuplicateAvatars(MultipartFile file);
-    int CheckingDuplicateAvatars(MultipartFile file,String profileIdentification);
+    public List<Avatar> getDuplicateAvatars(MultipartFile file);
+    int сheckPercentDuplicateAvatars(MultipartFile file, String profileIdentification);
 }

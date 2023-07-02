@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.kata.clientprofileavatar.service.AvatarService;
-import java.io.IOException;
 import java.util.List;
 
 
@@ -33,12 +32,9 @@ public class AvatarController {
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Avatar.class), mediaType = "application/json") }),
             @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema(defaultValue = "изображение для сохранения отсутствует")) }),
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
-    public void saveNewAvatar(@RequestParam("file") MultipartFile file, @RequestParam("profileIdentification") String profileIdentification,@RequestParam("active") boolean active) throws IOException {
-        if (file.getSize() != 0) {
+    public void saveNewAvatar(@RequestParam("file") MultipartFile file, @RequestParam("profileIdentification") String profileIdentification,@RequestParam("active") boolean active) {
             service.addAvatarActive(file,profileIdentification,active);
-        } else {
-            throw new IOException("изображение для сохранения отсутствует");
-        }
+
     }
     //обновление аватара
     @PatchMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -47,13 +43,9 @@ public class AvatarController {
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Avatar.class), mediaType = "application/json") }),
             @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema(defaultValue = "Обновления изображения с id прошло неудачно")) }),
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
-    public ResponseEntity<HttpStatus> updateAvatar(@RequestParam("file") MultipartFile avatar, @RequestParam("id") Integer id) throws IOException {
-        try {
+    public ResponseEntity<HttpStatus> updateAvatar(@RequestParam("file") MultipartFile avatar, @RequestParam("id") Integer id) {
             service.updateAvatar(avatar,id);
             return ResponseEntity.ok(HttpStatus.OK);
-        } catch (Exception e) {
-            throw new IOException("Обновления изображения с "+id+" прошло неудачно");
-        }
     }
     @PatchMapping(path = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
@@ -62,13 +54,9 @@ public class AvatarController {
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Avatar.class), mediaType = "application/json") }),
             @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema(defaultValue = "Обновления изображения с id прошло неудачно")) }),
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
-    public ResponseEntity<HttpStatus> updateAvatarActive(@RequestParam("file") MultipartFile avatar, @RequestParam("id") Integer id,@RequestParam("active") boolean active) throws IOException {
-        try {
+    public ResponseEntity<HttpStatus> updateAvatarActive(@RequestParam("file") MultipartFile avatar, @RequestParam("id") Integer id,@RequestParam("active") boolean active) {
             service.updateAvatarActive(avatar,id,active);
             return ResponseEntity.ok(HttpStatus.OK);
-        } catch (Exception e) {
-            throw new IOException("Обновления изображения с "+id+" прошло неудачно");
-        }
     }
     @PatchMapping( "/updateActive")
     @Operation(summary = "Изменение активности аватара")
@@ -76,13 +64,9 @@ public class AvatarController {
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Avatar.class), mediaType = "application/json") }),
             @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema(defaultValue = "Обновления изображения с id прошло неудачно")) }),
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
-    public ResponseEntity<HttpStatus> updateActive(@RequestParam("id") Integer id,@RequestParam("active") boolean active) throws IOException {
-        try {
+    public ResponseEntity<HttpStatus> updateActive(@RequestParam("id") Integer id,@RequestParam("active") boolean active) {
             service.updateActive(id, active);
             return ResponseEntity.ok(HttpStatus.OK);
-        } catch (Exception e) {
-            throw new IOException("Обновления изображения с "+id+" прошло неудачно");
-        }
     }
 
     // получение аватара из бд
@@ -92,13 +76,8 @@ public class AvatarController {
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Avatar.class), mediaType = "application/json") }),
             @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema(defaultValue = "Изображение с таким id не найден")) }),
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
-    public ResponseEntity<?> getAvatarId(@RequestParam Integer id) throws IOException {
-        try {
-            Avatar avatar = service.getAvatarById(id);
-            return new ResponseEntity<>(avatar, HttpStatus.OK);
-        } catch (Exception e) {
-            throw new IOException("Изображение с " + id + " не найден");
-        }
+    public ResponseEntity<?> getAvatarId(@RequestParam Integer id) {
+            return new ResponseEntity<>(service.getAvatarById(id), HttpStatus.OK);
     }
 
     @GetMapping("/get/UUID/")
@@ -107,13 +86,8 @@ public class AvatarController {
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Avatar.class), mediaType = "application/json") }),
             @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema(defaultValue = "Изображение с таким uuid не найден")) }),
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
-    public ResponseEntity<?> getAvatarUuid(@RequestParam String uuid) throws IOException {
-        try {
-            Avatar avatar = service.getByAvatarUUID(uuid);
-            return new ResponseEntity<>(avatar, HttpStatus.OK);
-        } catch (Exception e) {
-            throw new IOException("Изображение с " + uuid + " не найден");
-        }
+    public ResponseEntity<?> getAvatarUuid(@RequestParam String uuid) {
+            return new ResponseEntity<>(service.getByAvatarUUID(uuid), HttpStatus.OK);
     }
     @GetMapping("/get/list/")
     @Operation(summary = "Получить листа аватаров по profileIdentification")
@@ -121,12 +95,8 @@ public class AvatarController {
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Avatar.class), mediaType = "application/json") }),
             @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema(defaultValue = "Получение изображения по идентификатору + profileIdentification прошло неудачно")) }),
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
-    public ResponseEntity<List<Avatar>> getAvatarsByProfileIdentification(@RequestParam("profileIdentification") String profileIdentification) throws IOException {
-        try {
+    public ResponseEntity<List<Avatar>> getAvatarsByProfileIdentification(@RequestParam("profileIdentification") String profileIdentification) {
             return ResponseEntity.ok(service.getListAvatarsByProfileIdentification(profileIdentification));
-        } catch (Exception e) {
-            throw new IOException("Получение изображения по идентификатору " + profileIdentification + " прошло неудачно");
-        }
     }
     @GetMapping("/get/profileIdentification")
     @Operation(summary = "Получить активный аватар по его profileIdentification")
@@ -134,13 +104,9 @@ public class AvatarController {
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Avatar.class), mediaType = "application/json") }),
             @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema(defaultValue = "Изображение с таким id не найден")) }),
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
-    public ResponseEntity<?> getAvatar(@RequestParam("profileIdentification") String profileIdentification) throws IOException {
-        try {
+    public ResponseEntity<?> getAvatar(@RequestParam("profileIdentification") String profileIdentification) {
             Avatar avatar = service.getAvatarByIdAndActive(profileIdentification);
             return new ResponseEntity<>(avatar, HttpStatus.OK);
-        } catch (Exception e) {
-            throw new IOException("Изображение с " + profileIdentification + " не найден");
-        }
     }
     // методы удаления аватара
     @DeleteMapping("/delete/id")
@@ -149,13 +115,9 @@ public class AvatarController {
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Avatar.class), mediaType = "application/json") }),
             @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema(defaultValue = "Удаление изображения с id прошло неудачно")) }),
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
-    public ResponseEntity<HttpStatus> deleteAvatars(@RequestParam("id") Integer id) throws IOException {
-        try {
+    public ResponseEntity<HttpStatus> deleteAvatars(@RequestParam("id") Integer id) {
             service.deleteAvatarById(id);
             return ResponseEntity.ok(HttpStatus.OK);
-        } catch (Exception e) {
-            throw new IOException("Удаление изображения с " + id + " прошло неудачно");
-        }
     }
     @DeleteMapping("/delete/active")
     @Operation(summary = "Удалить активный аватар")
@@ -163,40 +125,29 @@ public class AvatarController {
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Avatar.class), mediaType = "application/json") }),
             @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema(defaultValue = "Удаление изображения прошло неудачно")) }),
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
-    public ResponseEntity<HttpStatus> deleteAvatarsActive(@RequestParam("profileIdentification") String profileIdentification) throws IOException {
-        try {
+    public ResponseEntity<HttpStatus> deleteAvatarsActive(@RequestParam("profileIdentification") String profileIdentification){
             service.deleteAvatarByProfileIdentification(profileIdentification);
             return ResponseEntity.ok(HttpStatus.OK);
-        } catch (Exception e) {
-            throw new IOException("Удаление изображения прошло неудачно");
-        }
     }
-    @PostMapping(path = "/Duplicate/checkingDuplicateAvatar",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path = "/duplicate/getDuplicateAvatar",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "запрос дубилкатов аватара")
     @ApiResponses({
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Avatar.class), mediaType = "application/json") }),
             @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema(defaultValue = "Поиск прошел неудачно")) }),
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
-    public ResponseEntity<List<Avatar>> checkingDuplicateAvatar(@RequestParam("file") MultipartFile file) throws IOException {
-        try {
-            return ResponseEntity.ok(service.getCheckingDuplicateAvatars(file));
-        } catch (Exception e) {
-            throw new IOException("Поиск прошел неудачно");
-        }
+    public ResponseEntity<List<Avatar>> checkingDuplicateAvatar(@RequestParam("file") MultipartFile file){
+            return ResponseEntity.ok(service.getDuplicateAvatars(file));
+
     }
 
-    @PostMapping(path = "/Duplicate/PercentAvatar",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path = "/duplicate/percentDuplicateAvatar",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "сравнение аватаров на совподение в %")
     @ApiResponses({
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Integer.class), mediaType = "application/json") }),
             @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema(defaultValue = "Сравнение прошло неудачно")) }),
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
-    public int DuplicateAvatar(@RequestParam("file") MultipartFile file,@RequestParam("profileIdentification") String profileIdentification) throws IOException {
-        try {
-            return service.CheckingDuplicateAvatars(file, String.valueOf(profileIdentification));
-        } catch (Exception e) {
-            throw new IOException("Сравнение прошло неудачно");
-        }
+    public ResponseEntity<Integer> duplicatePercentAvatar(@RequestParam("file") MultipartFile file, @RequestParam("profileIdentification") String profileIdentification) {
+            return ResponseEntity.ok(service.сheckPercentDuplicateAvatars(file, String.valueOf(profileIdentification)));
     }
 
 
