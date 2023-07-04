@@ -7,9 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import static com.kata.clientprofilefacade.constant.PhoneNumberRegExp.PHONE_NUMBER_FORMAT;
 
-
-import static com.kata.clientprofilefacade.util.PhoneNumberConstants.PHONE_NUMBER_FORMAT;
 
 @Getter
 @Setter

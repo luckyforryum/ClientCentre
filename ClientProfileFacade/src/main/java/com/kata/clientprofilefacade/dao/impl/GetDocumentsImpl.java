@@ -4,8 +4,10 @@ import com.kata.clientprofilefacade.dao.GetDocumentsDao;
 import com.kata.clientprofilefacade.service.MaskingService;
 import com.kata.clientprofilefacade.service.impl.UserCheck;
 import com.kata.clientprofilefacade.service.impl.ValidateToken;
+import com.kata.clientprofilefacade.util.RFPassportDocUtils;
 import lombok.AllArgsConstructor;
 import org.kata.dto.response.DocumentsResponseDto;
+import org.kata.dto.response.RFPassportDocResponseDto;
 import org.springframework.http.*;
 import org.springframework.stereotype.Repository;
 

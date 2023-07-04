@@ -62,15 +62,15 @@ public class FacadeGetBalanceImpl implements FacadeGetBalanceDao {
         double usdValue = currencyUsd.getValue();
 
 
-        System.out.println("Meta " + meta);
-
-
-        System.out.println("EUR Code: " + eurCode);
-        System.out.println("EUR Value: " + eurValue);
-
-
-        System.out.println("USD Code: " + usdCode);
-        System.out.println("USD Value: " + usdValue);
+//        System.out.println("Meta " + meta);
+//
+//
+//        System.out.println("EUR Code: " + eurCode);
+//        System.out.println("EUR Value: " + eurValue);
+//
+//
+//        System.out.println("USD Code: " + usdCode);
+//        System.out.println("USD Value: " + usdValue);
 
         BalanceAccountDTO balance = new BalanceAccountDTO();
         balance.setIcp(icp);

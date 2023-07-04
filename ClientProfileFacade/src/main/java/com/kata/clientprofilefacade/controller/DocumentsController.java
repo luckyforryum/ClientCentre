@@ -41,7 +41,8 @@ public class DocumentsController {
                                     schema = @Schema(implementation = IndividualErrorForSwagger.class)))
             })
     public <T> ResponseEntity<T> getDocuments(@RequestHeader(value = "Authorization", required = false) String token, @PathVariable("uuidInd") String uuid) {
-    return getDocumentsService.giveDocuments(token, uuid);
+        System.out.println(token);
+        return getDocumentsService.giveDocuments(token, uuid);
     }
 
 

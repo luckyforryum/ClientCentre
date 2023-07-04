@@ -8,10 +8,12 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+
 
 @Repository
 @AllArgsConstructor
@@ -24,14 +26,13 @@ public class ProfileAvatarImpl implements ProfileAvatarDao {
     @Override
     public <T> ResponseEntity<T> performAvatarOperation(MultipartFile file, Integer id, String profileIdentification, String uuid, boolean active, String endpoint, HttpMethod httpMethod, Class<T> responseType) {
 
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
             body.add("file", file == null ? null : new ByteArrayResource(file.getBytes()) {
-            @Override
-            public String getFilename() {
-                return file.getOriginalFilename();
-            }
+                @Override
+                public String getFilename() {
+                    return file.getOriginalFilename();
+                }
             });
-
             body.add("id", id);
             body.add("profileIdentification", profileIdentification);
             body.add("uuid", uuid);
@@ -52,6 +53,8 @@ public class ProfileAvatarImpl implements ProfileAvatarDao {
             } else {
                 return ResponseEntity.badRequest().build();
             }
+
+
 
     }
 

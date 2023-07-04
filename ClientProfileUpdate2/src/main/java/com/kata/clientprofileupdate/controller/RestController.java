@@ -25,7 +25,7 @@ public class RestController {
         rfPassportDocResponseDto.setUuid("111");
         rfPassportDocResponseDto.setName("Василий");
         rfPassportDocResponseDto.setSurname("Щукин");
-        rfPassportDocResponseDto.setNumber("123456");
+        rfPassportDocResponseDto.setNumber("123453");
         rfPassportDocResponseDto.setSeries("1234");
         RFPassportDocResponseDto rfPassportDocResponseDto2 = new RFPassportDocResponseDto();
         rfPassportDocResponseDto2.setUuid("2");

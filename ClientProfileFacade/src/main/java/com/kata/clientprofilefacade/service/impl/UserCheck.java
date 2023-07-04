@@ -18,11 +18,9 @@ public class UserCheck {
         String loaderUrl = "http://127.0.0.1:1111/documents/" + uuid; // url к loader
 
         ResponseEntity<DocumentsResponseDto> documentsResponse;
-        try {
-            documentsResponse = restTemplate.getForEntity(loaderUrl, DocumentsResponseDto.class);
-        } catch (HttpClientErrorException e) {
-            return new ResponseEntity<>("Ошибка: " + e.getStatusCode(), e.getStatusCode());
-        }
+
+        documentsResponse = restTemplate.getForEntity(loaderUrl, DocumentsResponseDto.class);
+
 
         if (documentsResponse.getStatusCode() == HttpStatus.OK) {
             return ResponseEntity.ok(documentsResponse.getBody());

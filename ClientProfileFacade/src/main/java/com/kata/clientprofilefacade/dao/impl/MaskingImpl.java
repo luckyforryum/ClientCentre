@@ -3,7 +3,6 @@ package com.kata.clientprofilefacade.dao.impl;
 import com.kata.clientprofilefacade.dao.MaskingDao;
 import com.kata.clientprofilefacade.dto.PhoneNumberDTO;
 import com.kata.clientprofilefacade.util.IndividualUtils;
-import com.kata.clientprofilefacade.util.PhoneNumberConstants;
 import com.kata.clientprofilefacade.util.PhoneNumberUtils;
 import com.kata.clientprofilefacade.util.RFPassportDocUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +12,9 @@ import org.kata.dto.response.RFPassportDocResponseDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
+import static com.kata.clientprofilefacade.constant.PhoneNumberRegExp.PHONE_NUMBER_REGEX_MASK_FORMAT;
+import static com.kata.clientprofilefacade.constant.PhoneNumberRegExp.PHONE_NUMBER_REPLACEMENT_FORMAT;
 
 
 /**
@@ -31,6 +33,7 @@ public class MaskingImpl implements MaskingDao {
      */
     @Override
     public DocumentsResponseDto maskPassport(DocumentsResponseDto documentsResponseDto) {
+
         List<RFPassportDocResponseDto> rfPassportDocs = (List<RFPassportDocResponseDto>) documentsResponseDto.getRfPassportDocs();
         for (RFPassportDocResponseDto rfPassportDoc : rfPassportDocs) {
             RFPassportDocUtils.checkPassport(rfPassportDoc);
@@ -79,8 +82,9 @@ public class MaskingImpl implements MaskingDao {
         log.info("Masking phone number", phoneNumber);
         PhoneNumberUtils.validatePhoneNumber(phoneNumber.getValue());
         phoneNumber.setValue(phoneNumber.getValue().replaceAll(
-                PhoneNumberConstants.PHONE_NUMBER_REGEX_MASK_FORMAT,
-                PhoneNumberConstants.PHONE_NUMBER_REPLACEMENT_FORMAT));
+                PHONE_NUMBER_REGEX_MASK_FORMAT,
+                PHONE_NUMBER_REPLACEMENT_FORMAT));
+
         return phoneNumber;
     }
 }

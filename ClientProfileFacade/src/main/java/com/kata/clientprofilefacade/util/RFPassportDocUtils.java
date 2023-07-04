@@ -5,8 +5,6 @@ import com.kata.clientprofilefacade.exception.rfpassportdocexception.InvalidPass
 import lombok.extern.slf4j.Slf4j;
 import org.kata.dto.response.RFPassportDocResponseDto;
 
-import com.kata.clientprofilefacade.dto.RFPassportDocDTO;
-
 
 /**
  * This class provides helper functions for RFPassportDoc class
@@ -44,6 +42,7 @@ public class RFPassportDocUtils {
         }
         if (!rfPassportDoc.getNumber().matches("\\d+")) {
             log.error("Passport number must contain only numbers");
+
             throw new InvalidPassportNumberException("Passport number must contain only numbers");
         }
     }

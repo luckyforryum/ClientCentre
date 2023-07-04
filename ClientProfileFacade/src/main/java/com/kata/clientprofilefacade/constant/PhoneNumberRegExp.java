@@ -1,9 +1,8 @@
-package com.kata.clientprofilefacade.util;
-
+package com.kata.clientprofilefacade.constant;
 /**
  * This class is designed to store constant values for the Phone Number class
  */
-public class PhoneNumberConstants {
+public class PhoneNumberRegExp {
     /**
      * This string is for properly formatting the phone number
      */
