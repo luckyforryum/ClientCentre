@@ -2,50 +2,61 @@ package org.kata.clientprofileloader.controller;
 
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.kata.clientprofileloader.service.AddressService;
 import org.kata.entity.individual.Address;
-import org.kata.repository.AddressRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@AllArgsConstructor
+import java.util.Optional;
+
 @RestController
-@RequestMapping("/address")
+@AllArgsConstructor
+@Slf4j
+@RequestMapping("/api/client/{uuid}/address")
 public class AddressController {
     private final AddressService addressService;
-    private final AddressRepository addressRepository;
 
-    @GetMapping("/{uuid}")
-    public ResponseEntity<Address> getAddressByUuid(@PathVariable String uuid) {
-
-        Address address = addressService.getAddressByUuid(uuid);
-        if (address == null) {
-            return ResponseEntity.notFound().build();
+    @GetMapping
+    public ResponseEntity<Address> getClientAddress(@PathVariable String uuid) {
+        log.info("Получение адреса для клиента с ID: {}", uuid);
+        Optional<Address> address = addressService.getClientAddress(uuid);
+        if (address.isPresent()) {
+            log.info("Адрес найден для клиента с ID: {}", uuid);
+            return new ResponseEntity<>(address.get(), HttpStatus.OK);
+        } else {
+            log.info("Адрес не найден для клиента с ID: {}", uuid);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(address);
     }
 
     @PostMapping
-    public ResponseEntity<Address> addAddress(@RequestBody Address address) {
-
-        Address savedAddress = addressRepository.save(address);
-        return ResponseEntity.ok(savedAddress);
+    public ResponseEntity<Address> addClientAddress(@PathVariable String uuid, @RequestBody Address address) {
+        log.info("Добавление адреса для клиента с ID: {}", uuid);
+        Address savedAddress = addressService.addClientAddress(uuid, address);
+        log.info("Адрес успешно добавлен для клиента с ID: {}", uuid);
+        return new ResponseEntity<>(savedAddress, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{uuid}")
-    public ResponseEntity<Address> updateAddress(@PathVariable String uuid, @RequestBody Address address) {
+    @PutMapping
+    public ResponseEntity<Address> updateClientAddress(@PathVariable String uuid, @RequestBody Address updatedAddress) {
+        log.info("Обновление адреса для клиента с ID: {}", uuid);
+        Address address = new Address();
+        Address savedAddress = addressService.updateClientAddress(address);
+        log.info("Адрес успешно обновлен для клиента с ID: {}", uuid);
+        return new ResponseEntity<>(savedAddress, HttpStatus.OK);
+    }
 
-        Address existingAddress = addressService.getAddressByUuid(uuid);
-        if (existingAddress == null) {
-            return ResponseEntity.notFound().build();
+    @DeleteMapping
+    public ResponseEntity<Void> deleteClientAddress(@PathVariable String uuid) {
+        log.info("Удаление адреса для клиента с ID: {}", uuid);
+        if (addressService.deleteClientAddress(uuid)) {
+            log.info("Адрес успешно удален для клиента с ID: {}", uuid);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            log.info("Адрес не найден для клиента с ID: {}", uuid);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-
-        existingAddress.setUuid(address.getUuid());
-        existingAddress.setStreet(address.getStreet());
-
-
-        Address updatedAddress = addressRepository.save(existingAddress);
-        return ResponseEntity.ok(updatedAddress);
     }
 }

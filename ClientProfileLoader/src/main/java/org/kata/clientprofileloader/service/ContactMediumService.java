@@ -1,74 +1,73 @@
 package org.kata.clientprofileloader.service;
 
+import com.google.protobuf.ServiceException;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.kata.entity.contactmedium.ContactMedium;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.kata.repository.ContactMediumRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
+
+/**
+ * Этот сервис отвечает за выполнение операций получения, добавления, обновления и
+ * удаления контактной информации клиента
+ */
 @Service
 @AllArgsConstructor
+@Slf4j
 public class ContactMediumService {
-    private final RestTemplate restTemplate;
-    private final String commonMicroserviceUrl; // URL микросервиса Common
-    private final Logger logger = LoggerFactory.getLogger(ContactMediumService.class);
+    private final ContactMediumRepository contactMediumRepository;
 
-
-    public ContactMedium getContactMediumById(String id) {
-        String url = commonMicroserviceUrl + "/contact-mediums/" + id;
+    // Возвращает контактную информацию клиента по указанному UUID
+    @SneakyThrows
+    public Optional<ContactMedium> getClientContact(String uuid) {
         try {
-            ResponseEntity<ContactMedium> response = restTemplate.getForEntity(url, ContactMedium.class);
-            if (response.getStatusCode().is2xxSuccessful()) {
-                return response.getBody();
-            } else {
-                logger.warn("Failed to retrieve contact medium. Status code: {}", response.getStatusCode());
-            }
-        } catch (HttpClientErrorException ex) {
-            if (ex.getStatusCode() == HttpStatus.NOT_FOUND) {
-                logger.warn("Contact medium not found. ID: {}", id);
-            } else {
-                logger.error("Error retrieving contact medium. Status code: {}", ex.getStatusCode(), ex);
-            }
-        } catch (Exception ex) {
-            logger.error("Error retrieving contact medium", ex);
+            return contactMediumRepository.getContactMediumByUuid(uuid);
+        } catch (Exception e) {
+            log.error("Ошибка при получении контакта для клиента с UUID: {}", uuid, e);
+            throw new ServiceException("Ошибка при получении контакта для клиента");
         }
-        return null;
     }
 
-    public ResponseEntity<ContactMedium> addContactMedium(ContactMedium contactMedium) {
-        String url = commonMicroserviceUrl + "/contact-mediums";
+    //Добавляет контактную информацию клиента по указанному UUID
+    @SneakyThrows
+    public ContactMedium addClientContact(String uuid, ContactMedium contactMedium) {
         try {
-            ResponseEntity<ContactMedium> response = restTemplate.postForEntity(url, contactMedium, ContactMedium.class);
-            if (response.getStatusCode().is2xxSuccessful()) {
-                return ResponseEntity.ok(response.getBody());
-            } else {
-                logger.warn("Failed to add contact medium. Status code: {}", response.getStatusCode());
-            }
-        } catch (Exception ex) {
-            logger.error("Error adding contact medium", ex);
+            contactMedium.setUuid(uuid);
+            return contactMediumRepository.save(contactMedium);
+        } catch (Exception e) {
+            log.error("Ошибка при добавлении контакта для клиента с UUID: {}", uuid, e);
+            throw new ServiceException("Ошибка при добавлении контакта для клиента");
+
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
-    public ResponseEntity<ContactMedium> updateContactMedium(String id, ContactMedium contactMedium) {
-        String url = commonMicroserviceUrl + "/contact-mediums/" + id;
+    //Обновлят  контактную информацию клиента по указанному UUID
+    @SneakyThrows
+    public ContactMedium updateClientContact(ContactMedium contactMedium) {
         try {
-            restTemplate.put(url, contactMedium);
-            return ResponseEntity.ok().build();
-        } catch (HttpClientErrorException ex) {
-            if (ex.getStatusCode() == HttpStatus.NOT_FOUND) {
-                logger.warn("Contact medium not found. ID: {}", id);
-                return ResponseEntity.notFound().build();
-            } else {
-                logger.error("Error updating contact medium. Status code: {}", ex.getStatusCode(), ex);
-            }
-        } catch (Exception ex) {
-            logger.error("Error updating contact medium", ex);
+            return contactMediumRepository.save(contactMedium);
+        } catch (Exception e) {
+            log.error("Ошибка при обновлении контакта для клиента с UUID: {}", contactMedium.getUuid(), e);
+            throw new ServiceException("Ошибка при обновлении контакта для клиента");
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
+    //Удаляет контактную информацию клиента по указанному UUID
+    @SneakyThrows
+    public boolean deleteClientContact(String uuid) {
+        try {
+            Optional<ContactMedium> contact = contactMediumRepository.getContactMediumByUuid(uuid);
+            if (contact.isPresent()) {
+                contactMediumRepository.delete(contact.get());
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            log.error("Ошибка при удалении контакта для клиента с UUID: {}", uuid, e);
+            throw new ServiceException("Ошибка при удалении контакта для клиента");
+        }
     }
 }

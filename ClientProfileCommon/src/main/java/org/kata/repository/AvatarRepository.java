@@ -4,7 +4,9 @@ import org.kata.entity.individual.Avatar;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
-public interface AvatarRepository extends JpaRepository<Avatar,String> {
-    Avatar getAvatarByUuid (String uuid);
+public interface AvatarRepository extends JpaRepository<Avatar, String> {
+    Optional<Avatar> getAvatarByUuid(String uuid);
 }

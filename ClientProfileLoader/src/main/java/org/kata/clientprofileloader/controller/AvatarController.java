@@ -1,42 +1,63 @@
 package org.kata.clientprofileloader.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.kata.clientprofileloader.service.AvatarService;
 import org.kata.entity.individual.Avatar;
 import org.kata.repository.AvatarRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @AllArgsConstructor
-@RequestMapping()
+@Slf4j
+@RequestMapping("/api/client/{uuid}/avatar")
 public class AvatarController {
-        private final AvatarService avatarService;
-        private final AvatarRepository avatarRepository;
-        @GetMapping("/avatar/{uuid}")
-        public ResponseEntity<Avatar> getAvatarByUuid(@PathVariable String uuid) {
-            Avatar avatar = avatarService.getAvatarByUuid(uuid);
-            if (avatar == null) {
-                return ResponseEntity.notFound().build();
-            }
-
-            return ResponseEntity.ok(avatar);
+    private final AvatarService avatarService;
+    @GetMapping
+    public ResponseEntity<Avatar> getClientAvatar(@PathVariable String uuid) {
+        log.info("Получение аватара для клиента с ID: {}", uuid);
+        Optional<Avatar> avatar = avatarService.getClientAvatar(uuid);
+        if (avatar.isPresent()) {
+            log.info("Аватар найден для клиента с ID: {}", uuid);
+            return new ResponseEntity<>(avatar.get(), HttpStatus.OK);
+        } else {
+            log.info("Аватар не найден для клиента с ID: {}", uuid);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-    @PostMapping("/avatar")
-    public ResponseEntity<Avatar> addAvatar(@RequestBody Avatar avatar) {
-        Avatar savedAvatar = avatarRepository.save(avatar);
-        return ResponseEntity.ok(savedAvatar);
-    }
-    @PutMapping("/avatar/{uuid}")
-    public ResponseEntity<Avatar> updateAvatar(@PathVariable String uuid, @RequestBody Avatar avatar) {
-        Avatar existingAvatar = avatarRepository.getAvatarByUuid(uuid);
-        if (existingAvatar == null) {
-            return ResponseEntity.notFound().build();
-        }
-        existingAvatar.setUuid(avatar.getUuid());
-        Avatar updatedAvatar = avatarRepository.save(existingAvatar);
-        return ResponseEntity.ok(updatedAvatar);
     }
 
+    @PostMapping
+    public ResponseEntity<Avatar> addClientAvatar(@PathVariable String uuid, @RequestBody Avatar avatar) {
+        log.info("Добавление аватара для клиента с ID: {}", uuid);
+        Avatar savedAvatar = avatarService.addClientAvatar(uuid, avatar);
+        log.info("Аватар успешно добавлен для клиента с ID: {}", uuid);
+        return new ResponseEntity<>(savedAvatar, HttpStatus.CREATED);
+    }
+
+    @PutMapping
+    public ResponseEntity<Avatar> updateClientAvatar(@PathVariable String uuid, @RequestBody Avatar updatedAvatar) {
+        log.info("Обновление аватара для клиента с ID: {}", uuid);
+        Avatar avatar = new Avatar();
+        Avatar savedAvatar = avatarService.updateClientAvatar(avatar);
+        log.info("Аватар успешно обновлен для клиента с ID: {}", uuid);
+        return new ResponseEntity<>(savedAvatar, HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteClientAvatar(@PathVariable String uuid) {
+        log.info("Удаление аватара для клиента с ID: {}", uuid);
+        boolean deleted = avatarService.deleteClientAvatar(uuid);
+        if (deleted) {
+            log.info("Аватар успешно удален для клиента с ID: {}", uuid);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            log.info("Аватар не найден для клиента с ID: {}", uuid);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
+

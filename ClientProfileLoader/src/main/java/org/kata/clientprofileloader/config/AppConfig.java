@@ -19,14 +19,7 @@ import java.util.Properties;
 @EntityScan("org.kata.entity")
 public class AppConfig {
 
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-    @Bean
-    public String commonMicroserviceUrl() {
-        return "http://localhost:8081";
-    }
+
     @Value("${datasource.url}")
     private String URL;
     @Value("${datasource.driver-class-name}")
