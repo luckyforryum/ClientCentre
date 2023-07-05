@@ -6,22 +6,20 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.kata.entity.individual.Avatar;
 import org.kata.repository.AvatarRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.client.HttpClientErrorException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
+/**
+ * Этот сервис отвечает за получение, добавление, обновление и удаление аватара
+ */
 @Service
 @AllArgsConstructor
 @Slf4j
 public class AvatarService {
     private final AvatarRepository avatarRepository;
 
+    //получить аватар
     @SneakyThrows
     public Optional<Avatar> getClientAvatar(String uuid) {
         try {
@@ -32,6 +30,7 @@ public class AvatarService {
         }
     }
 
+    //добавить аватар
     @SneakyThrows
     public Avatar addClientAvatar(String uuid, Avatar avatar) {
         try {
@@ -43,6 +42,7 @@ public class AvatarService {
         }
     }
 
+    // обновление аватара
     @SneakyThrows
     public Avatar updateClientAvatar(Avatar avatar) {
         try {
@@ -53,6 +53,7 @@ public class AvatarService {
         }
     }
 
+    //удаление аватара
     @SneakyThrows
     public boolean deleteClientAvatar(String uuid) {
         try {

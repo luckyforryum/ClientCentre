@@ -11,6 +11,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Этот сервис отвечает за выполнение операций получения, добавления, обновления и
+ * удаления конкретного документа и получить список документов клиента
+ */
 
 @Service
 @AllArgsConstructor
@@ -18,6 +22,7 @@ import java.util.Optional;
 public class DocumentService {
     private final DocumentsRepository documentsRepository;
 
+    //получить все документы
     @SneakyThrows
     public List<Documents> getClientDocuments(String uuid) {
         try {
@@ -28,6 +33,7 @@ public class DocumentService {
         }
     }
 
+    // получить конкретный документ
     @SneakyThrows
     public Optional<Documents> getClientDocument(String uuid) {
         try {
@@ -38,6 +44,7 @@ public class DocumentService {
         }
     }
 
+    //добавить документ
     @SneakyThrows
     public Documents addClientDocument(String uuid, Documents document) {
         try {
@@ -49,6 +56,7 @@ public class DocumentService {
         }
     }
 
+    //обновить документ
     @SneakyThrows
     public Documents updateClientDocument(Documents document) {
         try {
@@ -58,7 +66,7 @@ public class DocumentService {
             throw new ServiceException("Ошибка при обновлении документа");
         }
     }
-
+//удалить документ
     @SneakyThrows
     public boolean deleteClientDocument(String uuid) {
         try {
@@ -69,7 +77,7 @@ public class DocumentService {
             }
             return false;
         } catch (Exception e) {
-            log.error("Ошибка при удалении документа с ID: {} для клиента с UUID: {}", uuid,e);
+            log.error("Ошибка при удалении документа с ID: {} для клиента с UUID: {}", uuid, e);
             throw new ServiceException("Ошибка при удалении документа для клиента");
         }
     }

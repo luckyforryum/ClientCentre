@@ -6,22 +6,19 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.kata.entity.individual.Address;
 import org.kata.repository.AddressRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.client.HttpClientErrorException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
+/**
+ * этот сервис отвечает за получение, добавление, обновление и удаление адресса
+ */
 @Service
 @AllArgsConstructor
 @Slf4j
 public class AddressService {
     private final AddressRepository addressRepository;
-
+//получить адрес
     @SneakyThrows
     public Optional<Address> getClientAddress(String uuid) {
         try {
@@ -31,6 +28,7 @@ public class AddressService {
             throw new ServiceException("Ошибка при получении адреса для клиента");
         }
     }
+    //добавить адрес
     @SneakyThrows
     public Address addClientAddress(String uuid, Address address) {
         try {
@@ -41,6 +39,7 @@ public class AddressService {
             throw new ServiceException("Ошибка при добавлении адреса для клиента");
         }
     }
+    //обновить адрес
     @SneakyThrows
     public Address updateClientAddress(Address address) {
         try {
@@ -50,6 +49,7 @@ public class AddressService {
             throw new ServiceException("Ошибка при обновлении адреса");
         }
     }
+    //удалить адрес
     @SneakyThrows
     public boolean deleteClientAddress(String uuid) {
         try {

@@ -1,8 +1,13 @@
 package org.kata.clientprofileloader.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.kata.entity.document.Documents;
+import org.kata.entity.individual.Address;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.kata.clientprofileloader.service.DocumentService;
@@ -14,10 +19,15 @@ import java.util.Optional;
 @RestController
 @AllArgsConstructor
 @Slf4j
+@Api(tags = "Документы клиента", description = "Методы для работы с документами клиента")
 @RequestMapping("/api/client/{uuid}/documents")
 public class DocumentController {
     private final DocumentService documentService;
 
+    @ApiOperation(value = "Получение списка документов клиента", notes = "Получает список документов клиента по его UUID")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Список успешно получен", response = Address.class),
+            @ApiResponse(code = 404, message = "Список не найден")})
     @GetMapping
     public ResponseEntity<List<Documents>> getClientDocuments(@PathVariable String uuid) {
         log.info("Получение списка документов для клиента с UUID: {}", uuid);
@@ -26,19 +36,27 @@ public class DocumentController {
         return new ResponseEntity<>(documents, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Получает документ клиента", notes = "Получает  документ клиента по его UUID")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Документ успешно получен", response = Address.class),
+            @ApiResponse(code = 404, message = "Документ не найден")})
     @GetMapping("/{uuid}")
     public ResponseEntity<Documents> getClientDocument(@PathVariable String uuid) {
-        log.info("Получение документа с UUID: {} для клиента с UUID: {}", uuid);
+        log.info("Получение документа с UUID: {}", uuid);
         Optional<Documents> document = documentService.getClientDocument(uuid);
         if (document.isPresent()) {
-            log.info("Документ с UUID: {} найден для клиента с UUID: {}", uuid);
+            log.info("Документ с UUID: {} ", uuid);
             return new ResponseEntity<>(document.get(), HttpStatus.OK);
         } else {
-            log.info("Документ с UUID: {} не найден для клиента с UUID: {}", uuid);
+            log.info("Документ с UUID: {} не найден для клиента", uuid);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
+    @ApiOperation(value = "Добавить документ клиента", notes = "Добавляет  документ клиента по его UUID")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Документ успешно добавлен", response = Address.class),
+            @ApiResponse(code = 404, message = "Документ не добавлен")})
     @PostMapping
     public ResponseEntity<Documents> addClientDocument(@PathVariable String uuid, @RequestBody Documents document) {
         log.info("Добавление документа для клиента с ID: {}", uuid);
@@ -47,25 +65,32 @@ public class DocumentController {
         return new ResponseEntity<>(savedDocument, HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "Обновляет документ клиента", notes = "Обновлеят  документ клиента по его UUID")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Документ успешно обновлен", response = Address.class),
+            @ApiResponse(code = 404, message = "Документ не обновлен")})
     @PutMapping("/{uuid}")
-    public ResponseEntity<Documents> updateClientDocument(@PathVariable String uuid,@RequestBody Documents updatedDocument) {
-        log.info("Обновление документа с UUID: {} для клиента с ID: {}", uuid);
+    public ResponseEntity<Documents> updateClientDocument(@PathVariable String uuid) {
+        log.info("Обновление документа с UUID: {} для клиента", uuid);
         Documents document = new Documents();
         Documents savedDocument = documentService.updateClientDocument(document);
-        log.info("Документ успешно обновлен с UUID: {} для клиента с ID: {}", uuid);
+        log.info("Документ успешно обновлен с UUID: {} для клиента ", uuid);
         return new ResponseEntity<>(savedDocument, HttpStatus.OK);
     }
 
-
+    @ApiOperation(value = "Удаляет документ клиента", notes = "Удаляет  документ клиента по его UUID")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Документ успешно удален", response = Address.class),
+            @ApiResponse(code = 404, message = "Документ не удален")})
     @DeleteMapping("/{uuid}")
     public ResponseEntity<Void> deleteClientDocument(@PathVariable String uuid) {
-        log.info("Удаление документа с UUID: {} для клиента с ID: {}", uuid);
+        log.info("Удаление документа с UUID: {} для клиента ", uuid);
         boolean deleted = documentService.deleteClientDocument(uuid);
         if (deleted) {
-            log.info("Документ успешно удален с ID: {} для клиента с ID: {}", uuid);
+            log.info("Документ успешно удален с ID: {} для клиента ", uuid);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
-            log.info("Документ с ID: {} не найден для клиента с ID: {}", uuid);
+            log.info("Документ с ID: {} не найден для клиента ", uuid);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
