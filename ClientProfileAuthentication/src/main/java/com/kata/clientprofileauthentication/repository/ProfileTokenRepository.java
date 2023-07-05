@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface ProfileTokenRepository extends CrudRepository<ProfileToken, String> {
     ProfileToken getProfileTokenByBearerToken(String bearerToken);
     ProfileToken getProfileTokensByJwtBearerToken(String jwtBearerToken);
-    ProfileToken getProfileTokensByTokenId(String tokenId);
-    Boolean existsByBearerToken(String BearerToken);
-    Boolean existsByJwtBearerToken(String JwtBearerToken);
+    boolean existsByBearerToken(String BearerToken);
+    boolean existsByJwtBearerToken(String JwtBearerToken);
+
 }

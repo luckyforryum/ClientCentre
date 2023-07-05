@@ -13,24 +13,21 @@ import org.springframework.data.redis.core.index.Indexed;
 @AllArgsConstructor
 @Builder
 @Data
-
 public class ProfileToken {
     @Id
     @Indexed
-    private String tokenId;
+    private String bearerToken;
     @Indexed
     private String jwtBearerToken;
     @Indexed
     private String refreshToken;
-    @Indexed
-    private String bearerToken;
+
     @Override
     public String toString() {
         return "ProfileToken{" +
-                "tokenId='" + tokenId + '\'' +
-                ", jwtBearerToken='" + jwtBearerToken + '\'' +
-                ", refreshToken='" + refreshToken + '\'' +
-                ", bearerToken='" + bearerToken + '\'' +
+                ", jwtBearerToken='" + bearerToken + '\'' +
+                ", refreshToken='" + jwtBearerToken + '\'' +
+                ", bearerToken='" + refreshToken + '\'' +
                 '}';
     }
 

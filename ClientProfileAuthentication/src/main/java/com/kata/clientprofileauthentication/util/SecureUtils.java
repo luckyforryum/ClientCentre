@@ -13,18 +13,16 @@ import org.springframework.stereotype.Component;
 import static com.kata.clientprofileauthentication.util.JwtTokenGenerator.ACCESS_SECRET_KEY;
 import static com.kata.clientprofileauthentication.util.JwtTokenGenerator.REFRESH_SECRET_KEY;
 
+/**
+ * сервис валидации и проверки токенов
+ */
 @Component
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class SecureUtils {
     private final JwtTokenGenerator jwtTokenGenerator;
-
-    public boolean validateTokens(ProfileToken byToken) {
-        return validateJwtBearerToken(byToken.getJwtBearerToken()) &&
-                validateRefreshToken(byToken.getRefreshToken());
-    }
-    public boolean validateJwtBearerToken(String accessToken) {
-        return validateToken(accessToken, ACCESS_SECRET_KEY);
+    public String refreshTokens(String token) {
+        return jwtTokenGenerator.generateBearerOrJwtBearerToken(token);
     }
     public boolean validateRefreshToken(String refreshToken) {
         return validateToken(refreshToken, REFRESH_SECRET_KEY);
@@ -52,7 +50,6 @@ public class SecureUtils {
     public Claims getAccessClaims(String accessToken) {
         return getClaims(accessToken, ACCESS_SECRET_KEY);
     }
-
     private Claims getClaims(String token, String key) {
         return Jwts.parserBuilder()
                 .setSigningKey(jwtTokenGenerator.secretKeyFabric(key))
@@ -60,7 +57,6 @@ public class SecureUtils {
                 .parseClaimsJws(token)
                 .getBody();
     }
-
     public boolean validateRefreshTokenByJwtBearerOrBearerToken(ProfileToken profileTokensByBearerOrJwtBearerToken) {
         return validateRefreshToken(profileTokensByBearerOrJwtBearerToken.getRefreshToken());
     }

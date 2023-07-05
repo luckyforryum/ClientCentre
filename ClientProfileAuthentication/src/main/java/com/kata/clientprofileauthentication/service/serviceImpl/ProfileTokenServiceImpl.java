@@ -1,13 +1,17 @@
-package com.kata.clientprofileauthentication.service;
+package com.kata.clientprofileauthentication.service.serviceImpl;
 
 import com.kata.clientprofileauthentication.models.ProfileToken;
 import com.kata.clientprofileauthentication.repository.ProfileTokenRepository;
+import com.kata.clientprofileauthentication.service.ProfileTokenService;
 import com.kata.clientprofileauthentication.util.JwtTokenGenerator;
 import com.kata.clientprofileauthentication.util.SecureUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * сервис для работы с рабочими токенами
+ */
 @Service
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class ProfileTokenServiceImpl implements ProfileTokenService {
@@ -16,39 +20,17 @@ public class ProfileTokenServiceImpl implements ProfileTokenService {
     private final SecureUtils secureUtils;
 
     @Override
-    public boolean serviceValidateALlTokens(String bearerToken) {
-        return secureUtils.validateTokens(profileTokenRepository.getProfileTokenByBearerToken(bearerToken));
-    }
-    @Override
-    public boolean serviceValidateBearerToken(String bearerToken) {
-        return secureUtils.validateJwtBearerToken(bearerToken);
-    }
-
-    @Override
-    public boolean serviceValidateRefreshToken(String bearerToken) {
-        return secureUtils.validateRefreshToken(bearerToken);
-    }
-
-    @Override
-    public String generateNewAllTokenServiceImpl() {
-        return profileTokenRepository.save(jwtTokenGenerator.generateAllTokens()).getTokenId();
-
-    }
-
-    @Override
-    public String findJwtBearerTokenById(String jwtbearerid) {
-        return profileTokenRepository.getProfileTokensByTokenId(jwtbearerid).getJwtBearerToken();
-    }
-
-    @Override
-    public String findBearerTokenById(String bearerid) {
-        return profileTokenRepository.getProfileTokensByTokenId(bearerid).getBearerToken();
+    public ProfileToken generateNewAllTokenServiceImpl() {
+        return profileTokenRepository.save(jwtTokenGenerator.generateAllTokens());
     }
 
     @Override
     public boolean findBearerTokenBool(String bearerToken) {
         return profileTokenRepository.existsByBearerToken(bearerToken);
-
+    }
+    @Override
+    public boolean findJwtBearerTokenBool(String jwtBearerToken) {
+        return profileTokenRepository.existsByJwtBearerToken(jwtBearerToken);
     }
 
     @Override
@@ -63,12 +45,11 @@ public class ProfileTokenServiceImpl implements ProfileTokenService {
     }
 
     @Override
-    public ProfileToken getProfileTokenByTokenId(String tokenId) {
-        return profileTokenRepository.getProfileTokensByTokenId(tokenId);
-    }
-
-    @Override
-    public boolean findJwtBearerTokenBool(String jwtBearerToken) {
-        return profileTokenRepository.existsByJwtBearerToken(jwtBearerToken);
+    public boolean findTokenBool(String tokenType, String bearerOrJwtBearerToken) {
+        if (tokenType.startsWith("Bearer ")) {
+            return profileTokenRepository.existsByBearerToken(bearerOrJwtBearerToken);
+        } else {
+            return profileTokenRepository.existsByJwtBearerToken(bearerOrJwtBearerToken);
+        }
     }
 }

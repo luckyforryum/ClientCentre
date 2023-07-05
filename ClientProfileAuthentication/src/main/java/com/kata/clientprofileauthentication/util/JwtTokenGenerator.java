@@ -5,25 +5,39 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import javax.crypto.SecretKey;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import java.util.Date;
+import java.util.List;
 
+/**
+ * сервис генерации новых токенов
+ */
 @Component
 public class JwtTokenGenerator {
-    protected static final String ACCESS_SECRET_KEY = "12345678910123456789101234567891012345678910123456789101234567891012345678910";
-    protected static final String REFRESH_SECRET_KEY = "12345678910123456789101234567891012345678910123456789101234567891012345678910";
-    private static final String ROLE = "CREDIT"; //пользователи определнных групп
+    @Value("${access.secret.key}")
+    protected static String ACCESS_SECRET_KEY;
+    @Value("${refresh.secret.key}")
+    protected static String REFRESH_SECRET_KEY;
+    @Value("${secret.roles}")
+    protected static List<String> ROLES;
+    @Value("${access.time}")
+    protected static int ACCESS_TIME;
+    @Value("${refresh.time}")
+    protected static int REFRESH_TIME;
+    @Value("${bearer.length}")
+    protected static int BEARER_LENGTH;
     protected SecretKey secretKeyFabric(String key) {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(key));
     }
 
     public ProfileToken generateAllTokens() {
         Date now = new Date();
-        Date accessDate = new Date(now.getTime() + 300000);// 5 min expiration
-        Date refreshDate = new Date(now.getTime() + 86400000); // 1 day expiration
+        Date accessDate = new Date(now.getTime() + (long) ACCESS_TIME *60*1000);// 5 min expiration
+        Date refreshDate = new Date(now.getTime() + (long) REFRESH_TIME *60*1000); // 1 day expiration
         String JwtBearerToken = "JwtBearer "+ Jwts.builder()
-                .claim("role", ROLE)
+                .claim("role", ROLES)
                 .setIssuedAt(now)
                 .setExpiration(accessDate)
                 .signWith(secretKeyFabric(ACCESS_SECRET_KEY))
@@ -36,8 +50,22 @@ public class JwtTokenGenerator {
         return ProfileToken.builder()
                 .jwtBearerToken(JwtBearerToken)
                 .refreshToken(JwtRefreshToken)
-                .bearerToken("Bearer "+ RandomStringUtils.randomAlphanumeric(64))
+                .bearerToken("Bearer "+ RandomStringUtils.randomAlphanumeric(BEARER_LENGTH))
                 .build();
+    }
+    public String generateBearerOrJwtBearerToken(String token) {
+        Date now = new Date();
+        Date accessDate = new Date(now.getTime() + (long) ACCESS_TIME *60*1000);
+        if (token.startsWith("Bearer ")) {
+            return "Bearer "+ RandomStringUtils.randomAlphanumeric(BEARER_LENGTH);
+        } else {
+            return "JwtBearer " + Jwts.builder()
+                    .claim("role", ROLES)
+                    .setIssuedAt(now)
+                    .setExpiration(accessDate)
+                    .signWith(secretKeyFabric(ACCESS_SECRET_KEY))
+                    .compact();
+        }
     }
 }
 

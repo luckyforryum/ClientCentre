@@ -2,9 +2,12 @@ package com.kata.clientprofileauthentication.controller;
 
 import com.kata.clientprofileauthentication.models.BearerOrJwtBearerToken;
 import com.kata.clientprofileauthentication.models.ProfileToken;
-import com.kata.clientprofileauthentication.service.ProfileTokenServiceImpl;
+import com.kata.clientprofileauthentication.service.serviceImpl.BlackProfileTokenServiceImpl;
+import com.kata.clientprofileauthentication.service.serviceImpl.ProfileTokenManagerImpl;
+import com.kata.clientprofileauthentication.service.serviceImpl.ProfileTokenServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,46 +19,37 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Slf4j
 public class AuthorizationController {
-
     private final ProfileTokenServiceImpl profileTokenServiceImpl;
+    private final BlackProfileTokenServiceImpl blackProfileTokenServiceImpl;
+    private final ProfileTokenManagerImpl profileTokenManagerImpl;
 
-    @GetMapping("/jwtbearer")
-    public ResponseEntity<String> testJwtBearer() {
-        String jwtbearerid = profileTokenServiceImpl
-                .generateNewAllTokenServiceImpl();
-        String jwtbearer = profileTokenServiceImpl.findJwtBearerTokenById(jwtbearerid);
+    /**
+     * тестовый метод
+     * @return возвращает в заголовке пару новых токенов Bearer и JwtBearer
+     * токены сохраняются в бд
+     */
 
-        log.info("BearerJwt токен: "+ jwtbearer);
-        return ResponseEntity.ok().header("jwtBearerToken", jwtbearer).build();
-    }
-
-    @GetMapping("/bearer")
-    public ResponseEntity<String> testBearer() {
-        String bearerid = profileTokenServiceImpl
-                .generateNewAllTokenServiceImpl();
-        String bearer = profileTokenServiceImpl.findBearerTokenById(bearerid);
-        log.info("Bearer токен: " + bearer);
-        return ResponseEntity.ok().header("BearerToken", bearer).build();
-    }
     @GetMapping("/newTokens")
     public ResponseEntity<ProfileToken> newTestTokens() {
-        String tokenId = profileTokenServiceImpl
+        ProfileToken newTokens = profileTokenServiceImpl
                 .generateNewAllTokenServiceImpl();
-        ProfileToken tokens = profileTokenServiceImpl.getProfileTokenByTokenId(tokenId);
         return ResponseEntity.ok()
-                .header("BearerToken", tokens.getBearerToken())
-                .header("JwtBearerToken",tokens.getJwtBearerToken())
+                .header("BearerToken", newTokens.getBearerToken())
+                .header("JwtBearerToken", newTokens.getJwtBearerToken())
                 .build();
     }
+    /**
+     * тестовый метод
+     * @param bearerOrJwtBearerToken
+     * @return возвращает status 200, если токен есть в бд
+     */
     @PostMapping("/authenticationFromFacade")
     public ResponseEntity<String> ClientProfileAuthenticationFromFacade(
             @RequestBody BearerOrJwtBearerToken bearerOrJwtBearerToken) {
-        // Проверка того, что токен начинается с "Bearer " и токен есть в бд
         if (bearerOrJwtBearerToken.getBearerOrJwtBearerToken().startsWith("Bearer ") &&
                 profileTokenServiceImpl.findBearerTokenBool(
                 bearerOrJwtBearerToken.getBearerOrJwtBearerToken())) {
             return ResponseEntity.ok().body("Bearer токен найден");
-            // Проверка того, что токен начинается с "JwtBearer " и токен есть в бд
             } else if (bearerOrJwtBearerToken.getBearerOrJwtBearerToken().startsWith("JwtBearer ") &&
                 profileTokenServiceImpl.findJwtBearerTokenBool(
                         bearerOrJwtBearerToken.getBearerOrJwtBearerToken())) {
@@ -63,46 +57,50 @@ public class AuthorizationController {
         }
         return ResponseEntity.badRequest().body("Token Invalid");
     }
-    @PostMapping("/authenticationFromFacadeValidation")
-    public ResponseEntity<String> ClientProfileAuthenticationFromFacadeValidation(
+    /**
+     * метод вовзращает новый токен в зависимости от того, какой токен на него пришел
+     * Под капотом старый токены сохраняются в blackList
+     * @param bearerOrJwtBearerToken
+     * @return возвращает новый JwtBearer или Bearer токен
+     */
+    @PostMapping("/authenticationFromFacadeValidationUpdate")
+    public ResponseEntity<String> ClientProfileAuthenticationFromFacadeValidationUpdate(
             @RequestBody BearerOrJwtBearerToken bearerOrJwtBearerToken) {
-        // Проверка того, что токен начинается с "Bearer " и токен есть в бд + докручена валидация
+        ProfileToken updateTokens = profileTokenManagerImpl.updateProfileToken(bearerOrJwtBearerToken);
+        if (bearerOrJwtBearerToken.getBearerOrJwtBearerToken().startsWith("Bearer ")) {
+            return ResponseEntity.ok()
+                    .header("New BearerToken", updateTokens.getBearerToken()).build();
+        } else if (bearerOrJwtBearerToken.getBearerOrJwtBearerToken().startsWith("JwtBearer ")) {
+            return ResponseEntity.ok()
+                    .header("New JwtBearerToken", updateTokens.getJwtBearerToken()).build();
+        } else return ResponseEntity.badRequest().body("Invalid request");
 
-        if (bearerOrJwtBearerToken.getBearerOrJwtBearerToken().startsWith("Bearer ") &&
-                profileTokenServiceImpl.findBearerTokenBool(
-                        bearerOrJwtBearerToken.getBearerOrJwtBearerToken()) &&
-                profileTokenServiceImpl.serviceValidateBearerOrJwtBearerToken(
-                        bearerOrJwtBearerToken.getBearerOrJwtBearerToken()
-                )) {
-            return ResponseEntity.ok().body("Bearer токен найден, token valid");
-        } else if (bearerOrJwtBearerToken.getBearerOrJwtBearerToken().startsWith("Bearer ") &&
-                profileTokenServiceImpl.findBearerTokenBool(
-                        bearerOrJwtBearerToken.getBearerOrJwtBearerToken()) &&
-                !profileTokenServiceImpl.serviceValidateBearerOrJwtBearerToken(
-                        bearerOrJwtBearerToken.getBearerOrJwtBearerToken()
-                )) {
-            return ResponseEntity.ok().body("Bearer токен найден, token Invalid");
-            // Проверка того, что токен начинается с "JwtBearer " и токен есть в бд + докручена валидация
-        } else if (bearerOrJwtBearerToken.getBearerOrJwtBearerToken().startsWith("JwtBearer ") &&
-                profileTokenServiceImpl.findJwtBearerTokenBool(
-                        bearerOrJwtBearerToken.getBearerOrJwtBearerToken()) &&
-                profileTokenServiceImpl.serviceValidateBearerOrJwtBearerToken(
-                        bearerOrJwtBearerToken.getBearerOrJwtBearerToken()
-                )) {
-            return ResponseEntity.ok().body("JwtBearer токен найден, token valid");
-        } else if (bearerOrJwtBearerToken.getBearerOrJwtBearerToken().startsWith("JwtBearer ") &&
-                profileTokenServiceImpl.findJwtBearerTokenBool(
-                        bearerOrJwtBearerToken.getBearerOrJwtBearerToken()) &&
-                !profileTokenServiceImpl.serviceValidateBearerOrJwtBearerToken(
-                        bearerOrJwtBearerToken.getBearerOrJwtBearerToken()
-                )) {
-            return ResponseEntity.ok().body("JwtBearer токен найден, token Invalid");
-            // Проверка того, что префикс токена верен
-        } else if (!bearerOrJwtBearerToken.getBearerOrJwtBearerToken().startsWith("JwtBearer ") &&
-                (!bearerOrJwtBearerToken.getBearerOrJwtBearerToken().startsWith("Bearer "))) {
+    }
+    /**
+     * основной метод, проверяет есть ли токены в blacklist,
+     * есть ли токены в бд
+     * валидны ли токены (проверка правильности их написания, даты экспирации, подделки подписи и тп)
+     * @param bearerOrJwtBearerToken
+     * @return возвращает status 200, если токен есть в бд и он валидный
+     */
+
+    @PostMapping("/authenticationFromFacadeValidationMain")
+    public ResponseEntity<String> ClientProfileAuthenticationFromFacadeValidationMain
+            (@RequestBody BearerOrJwtBearerToken bearerOrJwtBearerToken) {
+        String tokenType = profileTokenManagerImpl.getTokenType(bearerOrJwtBearerToken.getBearerOrJwtBearerToken());
+        if (StringUtils.isBlank(tokenType)) {
             return ResponseEntity.badRequest().body("Incorrect token");
         }
-        return ResponseEntity.badRequest().body("Token Invalid");
+        if (blackProfileTokenServiceImpl.findBlackTokens(bearerOrJwtBearerToken)) {
+            return ResponseEntity.ok().body("BlackList tokens");
+        }
+        if (profileTokenServiceImpl.findTokenBool(tokenType, bearerOrJwtBearerToken.getBearerOrJwtBearerToken())) {
+            if (profileTokenServiceImpl.serviceValidateBearerOrJwtBearerToken(bearerOrJwtBearerToken.getBearerOrJwtBearerToken())) {
+                return ResponseEntity.ok().body(tokenType + " токен найден, token valid");
+            } else {
+                return ResponseEntity.ok().body(tokenType + " токен найден, token Invalid");
+            }
+        } return ResponseEntity.badRequest().body("Token Invalid");
     }
 }
 
