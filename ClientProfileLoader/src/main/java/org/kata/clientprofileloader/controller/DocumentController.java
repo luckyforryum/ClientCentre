@@ -59,10 +59,8 @@ public class DocumentController {
             @ApiResponse(code = 404, message = "Документ не добавлен")})
     @PostMapping
     public ResponseEntity<Documents> addClientDocument(@PathVariable String uuid, @RequestBody Documents document) {
-        log.info("Добавление документа для клиента с ID: {}", uuid);
-        Documents savedDocument = documentService.addClientDocument(uuid, document);
         log.info("Документ успешно добавлен для клиента с ID: {}", uuid);
-        return new ResponseEntity<>(savedDocument, HttpStatus.CREATED);
+        return new ResponseEntity<>(documentService.addClientDocument(uuid, document), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Обновляет документ клиента", notes = "Обновлеят  документ клиента по его UUID")
@@ -73,9 +71,8 @@ public class DocumentController {
     public ResponseEntity<Documents> updateClientDocument(@PathVariable String uuid) {
         log.info("Обновление документа с UUID: {} для клиента", uuid);
         Documents document = new Documents();
-        Documents savedDocument = documentService.updateClientDocument(document);
         log.info("Документ успешно обновлен с UUID: {} для клиента ", uuid);
-        return new ResponseEntity<>(savedDocument, HttpStatus.OK);
+        return new ResponseEntity<>(documentService.updateClientDocument(document), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Удаляет документ клиента", notes = "Удаляет  документ клиента по его UUID")

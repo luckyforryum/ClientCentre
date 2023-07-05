@@ -46,10 +46,8 @@ public class AddressController {
     })
     @PostMapping
     public ResponseEntity<Address> addClientAddress(@PathVariable String uuid, @RequestBody Address address) {
-        log.info("Добавление адреса для клиента с ID: {}", uuid);
-        Address savedAddress = addressService.addClientAddress(uuid, address);
         log.info("Адрес успешно добавлен для клиента с ID: {}", uuid);
-        return new ResponseEntity<>(savedAddress, HttpStatus.CREATED);
+        return new ResponseEntity<>(addressService.addClientAddress(uuid, address), HttpStatus.CREATED);
     }
     @ApiOperation(value = "Обновление адреса клиента", notes = "Обновляет адрес клиента по его UUID")
     @ApiResponses(value = {
@@ -58,10 +56,9 @@ public class AddressController {
     @PutMapping
     public ResponseEntity<Address> updateClientAddress(@PathVariable String uuid, @RequestBody Address updatedAddress) {
         log.info("Обновление адреса для клиента с ID: {}", uuid);
-        Address address = new Address();
-        Address savedAddress = addressService.updateClientAddress(address);
+        Address address = new Address();;
         log.info("Адрес успешно обновлен для клиента с ID: {}", uuid);
-        return new ResponseEntity<>(savedAddress, HttpStatus.OK);
+        return new ResponseEntity<>(addressService.updateClientAddress(address), HttpStatus.OK);
     }
     @ApiOperation(value = "Удаление адреса клиента", notes = "Удаляет адрес клиента по его UUID")
     @ApiResponses(value = {

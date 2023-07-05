@@ -46,10 +46,8 @@ public class AvatarController {
             @ApiResponse(code = 404, message = "Аватар не добавлен")})
     @PostMapping
     public ResponseEntity<Avatar> addClientAvatar(@PathVariable String uuid, @RequestBody Avatar avatar) {
-        log.info("Добавление аватара для клиента с ID: {}", uuid);
-        Avatar savedAvatar = avatarService.addClientAvatar(uuid, avatar);
         log.info("Аватар успешно добавлен для клиента с ID: {}", uuid);
-        return new ResponseEntity<>(savedAvatar, HttpStatus.CREATED);
+        return new ResponseEntity<>(avatarService.addClientAvatar(uuid, avatar), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Обновление аватара клиента", notes = "Обновление аватар клиента по его UUID")
@@ -60,9 +58,8 @@ public class AvatarController {
     public ResponseEntity<Avatar> updateClientAvatar(@PathVariable String uuid, @RequestBody Avatar updatedAvatar) {
         log.info("Обновление аватара для клиента с UUID: {}", uuid);
         Avatar avatar = new Avatar();
-        Avatar savedAvatar = avatarService.updateClientAvatar(avatar);
         log.info("Аватар успешно обновлен для клиента с UUID: {}", uuid);
-        return new ResponseEntity<>(savedAvatar, HttpStatus.OK);
+        return new ResponseEntity<>(avatarService.updateClientAvatar(avatar), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Удаление аватара клиента", notes = "Удаляет аватар клиента по его UUID")
@@ -72,8 +69,7 @@ public class AvatarController {
     @DeleteMapping
     public ResponseEntity<Void> deleteClientAvatar(@PathVariable String uuid) {
         log.info("Удаление аватара для клиента с UUID: {}", uuid);
-        boolean deleted = avatarService.deleteClientAvatar(uuid);
-        if (deleted) {
+        if (avatarService.deleteClientAvatar(uuid)) {
             log.info("Аватар успешно удален для клиента с UUID: {}", uuid);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {

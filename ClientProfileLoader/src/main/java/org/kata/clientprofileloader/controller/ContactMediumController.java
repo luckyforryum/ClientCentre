@@ -46,10 +46,8 @@ public class ContactMediumController {
             @ApiResponse(code = 404, message = "Контакт не добавлен")})
     @PostMapping
     public ResponseEntity<ContactMedium> addClientContact(@PathVariable String uuid, @RequestBody ContactMedium contact) {
-        log.info("Добавление контакта для клиента с ID: {}", uuid);
-        ContactMedium savedContact = contactMediumService.addClientContact(uuid, contact);
         log.info("Контакт успешно добавлен для клиента с ID: {}", uuid);
-        return new ResponseEntity<>(savedContact, HttpStatus.CREATED);
+        return new ResponseEntity<>(contactMediumService.addClientContact(uuid, contact), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Обновление контакта клиента", notes = "Обновление кнтакт клиента по его UUID")
@@ -60,9 +58,8 @@ public class ContactMediumController {
     public ResponseEntity<ContactMedium> updateClientContact(@PathVariable String uuid, @RequestBody ContactMedium updatedContact) {
         log.info("Обновление контакта для клиента с UUID: {}", uuid);
         ContactMedium contact = new ContactMedium();
-        ContactMedium savedContact = contactMediumService.updateClientContact(contact);
         log.info("Контакт успешно обновлен для клиента с UUID: {}", uuid);
-        return new ResponseEntity<>(savedContact, HttpStatus.OK);
+        return new ResponseEntity<>(contactMediumService.updateClientContact(contact), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Удаление контакта клиента", notes = "Удаляет кнтакт клиента по его UUID")
