@@ -4,6 +4,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.kata.entity.document.Documents;
@@ -19,12 +21,12 @@ import java.util.Optional;
 @RestController
 @AllArgsConstructor
 @Slf4j
-@Api(tags = "Документы клиента", description = "Методы для работы с документами клиента")
+@Tag(name = "Документы клиента", description = "Методы для работы с документами клиента")
 @RequestMapping("/api/client/{uuid}/documents")
 public class DocumentController {
     private final DocumentService documentService;
 
-    @ApiOperation(value = "Получение списка документов клиента", notes = "Получает список документов клиента по его UUID")
+    @Operation(summary = "Получение списка документов клиента", description = "Получает список документов клиента по его UUID")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Список успешно получен", response = Address.class),
             @ApiResponse(code = 404, message = "Список не найден")})
@@ -36,7 +38,7 @@ public class DocumentController {
         return new ResponseEntity<>(documents, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Получает документ клиента", notes = "Получает  документ клиента по его UUID")
+    @Operation(summary = "Получает документ клиента", description = "Получает  документ клиента по его UUID")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Документ успешно получен", response = Address.class),
             @ApiResponse(code = 404, message = "Документ не найден")})
@@ -53,7 +55,7 @@ public class DocumentController {
         }
     }
 
-    @ApiOperation(value = "Добавить документ клиента", notes = "Добавляет  документ клиента по его UUID")
+    @Operation(summary = "Добавить документ клиента", description = "Добавляет  документ клиента по его UUID")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Документ успешно добавлен", response = Address.class),
             @ApiResponse(code = 404, message = "Документ не добавлен")})
@@ -63,7 +65,7 @@ public class DocumentController {
         return new ResponseEntity<>(documentService.addClientDocument(uuid, document), HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "Обновляет документ клиента", notes = "Обновлеят  документ клиента по его UUID")
+    @Operation(summary = "Обновляет документ клиента", description = "Обновлеят  документ клиента по его UUID")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Документ успешно обновлен", response = Address.class),
             @ApiResponse(code = 404, message = "Документ не обновлен")})
@@ -75,7 +77,7 @@ public class DocumentController {
         return new ResponseEntity<>(documentService.updateClientDocument(document), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Удаляет документ клиента", notes = "Удаляет  документ клиента по его UUID")
+    @Operation(summary = "Удаляет документ клиента", description = "Удаляет  документ клиента по его UUID")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Документ успешно удален", response = Address.class),
             @ApiResponse(code = 404, message = "Документ не удален")})

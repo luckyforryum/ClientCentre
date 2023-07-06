@@ -4,6 +4,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.kata.clientprofileloader.service.AvatarService;
@@ -18,12 +20,12 @@ import java.util.Optional;
 @RestController
 @AllArgsConstructor
 @Slf4j
-@Api(tags = "Аватар клиента", description = "Методы для работы с аватаром клиента")
+@Tag(name = "Аватар клиента", description = "Методы для работы с аватаром клиента")
 @RequestMapping("/api/client/{uuid}/avatar")
 public class AvatarController {
     private final AvatarService avatarService;
 
-    @ApiOperation(value = "Получение аватара клиента", notes = "Получает аватар клиента по его UUID")
+    @Operation(summary = "Получение аватара клиента", description = "Получает аватар клиента по его UUID")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Аватар успешно получен", response = Address.class),
             @ApiResponse(code = 404, message = "Аватар не найден")})
@@ -40,7 +42,7 @@ public class AvatarController {
         }
     }
 
-    @ApiOperation(value = "Добавить аватара клиента", notes = "Добавляет новый аватар")
+    @Operation(summary = "Добавить аватара клиента", description = "Добавляет новый аватар")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Аватар успешно добавлен", response = Address.class),
             @ApiResponse(code = 404, message = "Аватар не добавлен")})
@@ -50,7 +52,7 @@ public class AvatarController {
         return new ResponseEntity<>(avatarService.addClientAvatar(uuid, avatar), HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "Обновление аватара клиента", notes = "Обновление аватар клиента по его UUID")
+    @Operation(summary = "Обновление аватара клиента", description = "Обновление аватар клиента по его UUID")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Аватар успешно обнволен", response = Address.class),
             @ApiResponse(code = 404, message = "Аватар не обновлен")})
@@ -62,7 +64,7 @@ public class AvatarController {
         return new ResponseEntity<>(avatarService.updateClientAvatar(avatar), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Удаление аватара клиента", notes = "Удаляет аватар клиента по его UUID")
+    @Operation(summary = "Удаление аватара клиента", description = "Удаляет аватар клиента по его UUID")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Аватар успешно удален", response = Address.class),
             @ApiResponse(code = 404, message = "Аватар не удален")})

@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.kata.clientprofileloader.service.AddressService;
@@ -19,12 +20,12 @@ import java.util.Optional;
 @RestController
 @AllArgsConstructor
 @Slf4j
-@Api(tags = "Адреса клиентов", description = "Методы для работы с адресами клиентов")
+@Tag(name = "Адреса клиентов", description = "Методы для работы с адресами клиентов")
 @RequestMapping("/api/client/{uuid}/address")
 public class AddressController {
     private final AddressService addressService;
 
-    @ApiOperation(value = "Получение адреса клиента", notes = "Получает адрес клиента по его UUID")
+    @Operation(summary = "Получение адреса клиента", description = "Получает адрес клиента по его UUID")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Адрес успешно получен", response = Address.class),
             @ApiResponse(code = 404, message = "Адрес не найден")})
@@ -40,7 +41,7 @@ public class AddressController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    @ApiOperation(value = "Добавление адреса клиента", notes = "Добавляет адрес для клиента по его UUID")
+    @Operation(summary = "Добавление адреса клиента", description = "Добавляет адрес для клиента по его UUID")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Адрес успешно добавлен", response = Address.class)
     })
@@ -49,7 +50,7 @@ public class AddressController {
         log.info("Адрес успешно добавлен для клиента с ID: {}", uuid);
         return new ResponseEntity<>(addressService.addClientAddress(uuid, address), HttpStatus.CREATED);
     }
-    @ApiOperation(value = "Обновление адреса клиента", notes = "Обновляет адрес клиента по его UUID")
+    @Operation(summary = "Обновление адреса клиента", description = "Обновляет адрес клиента по его UUID")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Адрес успешно обновлен", response = Address.class)
     })
@@ -60,7 +61,7 @@ public class AddressController {
         log.info("Адрес успешно обновлен для клиента с ID: {}", uuid);
         return new ResponseEntity<>(addressService.updateClientAddress(address), HttpStatus.OK);
     }
-    @ApiOperation(value = "Удаление адреса клиента", notes = "Удаляет адрес клиента по его UUID")
+    @Operation(summary = "Удаление адреса клиента", description = "Удаляет адрес клиента по его UUID")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "Адрес успешно удален"),
             @ApiResponse(code = 404, message = "Адрес не найден")
