@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/testData")
 @AllArgsConstructor
-public class GetTestClient {
+public class TestDataInitializer {
     private final TestDataIndividualService dataIndividual;
 
     @Operation(summary = "Creates the number of individuals passed in the url parameters. " +
@@ -32,9 +32,9 @@ public class GetTestClient {
     @GetMapping("/get")
     public ResponseEntity<String> getTestDataIndividual(@RequestParam(value = "count", defaultValue = "1") int count) {
         dataIndividual.createIndividuals(count);
-        String message = "Successful creation of test data, count objects: " + count;
-        return ResponseEntity.ok(message);
+        return ResponseEntity.ok("Successful creation of test data, count objects: " + count);
     }
+
 
 }
 

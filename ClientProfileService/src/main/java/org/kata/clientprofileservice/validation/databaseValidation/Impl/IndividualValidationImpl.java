@@ -1,11 +1,11 @@
-package org.kata.clientprofileservice.validation.Impl;
+package org.kata.clientprofileservice.validation.databaseValidation.Impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 
 import org.kata.clientprofileservice.repository.IndividualRepo;
-import org.kata.clientprofileservice.validation.IndividualValidation;
+import org.kata.clientprofileservice.validation.databaseValidation.IndividualValidation;
 
 import org.kata.exception.NotFoundEntityException;
 import org.springframework.stereotype.Component;

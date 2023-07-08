@@ -14,8 +14,8 @@ import java.util.Date;
 public class RFPassportDocResponseDto {
 
     private String uuid;
-    private String series;
-    private String number;
+    private String seriesRFP;
+    private String numberRFP;
     private Date issued;
     private String departmentDoc;
     private Date receiptDocDate;

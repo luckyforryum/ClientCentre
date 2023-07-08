@@ -1,4 +1,4 @@
-package org.kata.clientprofileservice.validation;
+package org.kata.clientprofileservice.validation.databaseValidation;
 
 public interface IndividualValidation {
     void isExistIndividualByIcp(String icp);
