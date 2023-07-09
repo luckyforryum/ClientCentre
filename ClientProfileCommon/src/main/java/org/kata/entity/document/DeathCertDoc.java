@@ -36,13 +36,14 @@ public class DeathCertDoc {
     @Column(name = "department")
     private String departmentDoc;
 
-    @Column(name = "issued_date1")
+    @Column(name = "date")
     @Temporal(TemporalType.DATE)
     private Date getDateDoc;
-
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "document_id", referencedColumnName = "id")
     private Documents documents;
+
+
 }
 
