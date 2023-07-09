@@ -37,8 +37,8 @@ public class MaskingImpl implements MaskingDao {
         List<RFPassportDocResponseDto> rfPassportDocs = (List<RFPassportDocResponseDto>) documentsResponseDto.getRfPassportDocs();
         for (RFPassportDocResponseDto rfPassportDoc : rfPassportDocs) {
             RFPassportDocUtils.checkPassport(rfPassportDoc);
-            rfPassportDoc.setSeries(rfPassportDoc.getSeries().replaceAll("(\\d{2})\\d{2}", "$1**"));
-            rfPassportDoc.setNumber(rfPassportDoc.getNumber().replaceAll("\\d{4}(\\d{2})", "****$1"));
+            rfPassportDoc.setSeriesRFP(rfPassportDoc.getSeriesRFP().replaceAll("(\\d{2})\\d{2}", "$1**"));
+            rfPassportDoc.setNumberRFP(rfPassportDoc.getNumberRFP().replaceAll("\\d{4}(\\d{2})", "****$1"));
         }
         log.info("Masking the series and number of the passport",documentsResponseDto);
 

@@ -20,27 +20,27 @@ public class RFPassportDocUtils {
      */
     public static void checkPassport(RFPassportDocResponseDto rfPassportDoc) {
 
-        if (rfPassportDoc.getSeries() == null || rfPassportDoc.getSeries().isEmpty()) {
+        if (rfPassportDoc.getSeriesRFP() == null || rfPassportDoc.getSeriesRFP().isEmpty()) {
             log.error("Passport series is null or empty");
             throw new InvalidPassportSeriesException("Passport series cannot be null or empty");
         }
-        if (rfPassportDoc.getSeries().length() != 4) {
+        if (rfPassportDoc.getSeriesRFP().length() != 4) {
             log.error("Passport series must be 4 digits long");
             throw new InvalidPassportSeriesException("Passport series must be 4 digits long");
         }
-        if (!rfPassportDoc.getSeries().matches("\\d+")) {
+        if (!rfPassportDoc.getSeriesRFP().matches("\\d+")) {
             log.error("Passport series must contain only numbers");
             throw new InvalidPassportSeriesException("Passport series must contain only numbers");
         }
-        if (rfPassportDoc.getNumber() == null || rfPassportDoc.getNumber().isEmpty()) {
+        if (rfPassportDoc.getNumberRFP() == null || rfPassportDoc.getNumberRFP().isEmpty()) {
             log.error("Passport number cannot be null or empty");
             throw new InvalidPassportNumberException("Passport number cannot be null or empty");
         }
-        if (rfPassportDoc.getNumber().length() != 6) {
+        if (rfPassportDoc.getNumberRFP().length() != 6) {
             log.error("Passport number must be 6 digits long");
             throw new InvalidPassportNumberException("Passport number must be 6 digits long");
         }
-        if (!rfPassportDoc.getNumber().matches("\\d+")) {
+        if (!rfPassportDoc.getNumberRFP().matches("\\d+")) {
             log.error("Passport number must contain only numbers");
 
             throw new InvalidPassportNumberException("Passport number must contain only numbers");
