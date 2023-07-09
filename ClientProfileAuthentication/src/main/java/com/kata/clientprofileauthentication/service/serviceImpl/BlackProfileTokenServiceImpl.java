@@ -1,8 +1,8 @@
-package com.kata.clientprofileauthentication.service.serviceImpl;
+package com.kata.clientprofilefacade1.service.serviceImpl;
 
-import com.kata.clientprofileauthentication.models.BearerOrJwtBearerToken;
-import com.kata.clientprofileauthentication.repository.BlackListOfProfileTokensRepository;
-import com.kata.clientprofileauthentication.service.BlackProfileTokenService;
+import com.kata.clientprofilefacade1.models.BearerOrJwtBearerToken;
+import com.kata.clientprofilefacade1.repository.BlackListOfProfileTokensRepository;
+import com.kata.clientprofilefacade1.service.BlackProfileTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
-package com.kata.clientprofileauthentication.util;
+package com.kata.clientprofilefacade1.util;
 
-import com.kata.clientprofileauthentication.models.ProfileToken;
+import com.kata.clientprofilefacade1.models.ProfileToken;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

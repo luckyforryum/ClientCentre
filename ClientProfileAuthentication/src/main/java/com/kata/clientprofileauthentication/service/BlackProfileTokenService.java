@@ -1,6 +1,6 @@
-package com.kata.clientprofileauthentication.service;
+package com.kata.clientprofilefacade1.service;
 
-import com.kata.clientprofileauthentication.models.BearerOrJwtBearerToken;
+import com.kata.clientprofilefacade1.models.BearerOrJwtBearerToken;
 
 public interface BlackProfileTokenService {
     boolean findBlackTokens(BearerOrJwtBearerToken bearerOrJwtBearerToken);

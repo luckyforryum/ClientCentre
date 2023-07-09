@@ -1,7 +1,7 @@
-package com.kata.clientprofileauthentication.configuration;
+package com.kata.clientprofilefacade1.configuration;
 
-import com.kata.clientprofileauthentication.models.ProfileToken;
-import com.kata.clientprofileauthentication.repository.ProfileTokenRepository;
+import com.kata.clientprofilefacade1.models.ProfileToken;
+import com.kata.clientprofilefacade1.repository.ProfileTokenRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;

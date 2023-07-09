@@ -1,4 +1,4 @@
-package com.kata.clientprofileauthentication;
+package com.kata.clientprofilefacade1;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

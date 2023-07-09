@@ -1,7 +1,7 @@
-package com.kata.clientprofileauthentication.service;
+package com.kata.clientprofilefacade1.service;
 
-import com.kata.clientprofileauthentication.models.BearerOrJwtBearerToken;
-import com.kata.clientprofileauthentication.models.ProfileToken;
+import com.kata.clientprofilefacade1.models.BearerOrJwtBearerToken;
+import com.kata.clientprofilefacade1.models.ProfileToken;
 
 public interface ProfileTokenManager {
     ProfileToken updateProfileToken(BearerOrJwtBearerToken bearerOrJwtBearerToken);

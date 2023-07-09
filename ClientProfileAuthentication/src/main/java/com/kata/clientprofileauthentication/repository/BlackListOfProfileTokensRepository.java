@@ -1,6 +1,6 @@
-package com.kata.clientprofileauthentication.repository;
+package com.kata.clientprofilefacade1.repository;
 
-import com.kata.clientprofileauthentication.models.BlackListOfProfileTokens;
+import com.kata.clientprofilefacade1.models.BlackListOfProfileTokens;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
