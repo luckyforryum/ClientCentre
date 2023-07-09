@@ -4,9 +4,11 @@ package com.kata.clientprofileupdate.controller;
 import lombok.AllArgsConstructor;
 import org.kata.dto.response.DocumentsResponseDto;
 import org.kata.dto.response.RFPassportDocResponseDto;
+import org.kata.entity.document.SNILSDoc;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.ResourceAccessException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,14 +29,9 @@ public class RestController {
         rfPassportDocResponseDto.setSurname("Щукин");
         rfPassportDocResponseDto.setNumber("123453");
         rfPassportDocResponseDto.setSeries("1234");
-        RFPassportDocResponseDto rfPassportDocResponseDto2 = new RFPassportDocResponseDto();
-        rfPassportDocResponseDto2.setUuid("2");
-        rfPassportDocResponseDto2.setName("22");
-        rfPassportDocResponseDto2.setSurname("222");
-        rfPassportDocResponseDto2.setNumber("123456");
-        rfPassportDocResponseDto2.setSeries("1234");
+
         rfPassportDocs.add(rfPassportDocResponseDto);
-        rfPassportDocs.add(rfPassportDocResponseDto2);
+
         documentsResponseDto.setRfPassportDocs(rfPassportDocs);
 
         return new ResponseEntity<>(documentsResponseDto, HttpStatus.OK);
@@ -61,10 +58,16 @@ public class RestController {
 
 
 
-//    @GetMapping("/{uuidInd}")
-//    public DocumentsResponseDto getDocuments(@PathVariable("uuidInd") String uuid) {
-//        DocumentsResponseDto documentsResponseDto = new DocumentsResponseDto();
-//        documentsResponseDto.setUuid(uuid);
-//        return documentsResponseDto;
-//    }
+    @GetMapping("/qr")
+    public <T>ResponseEntity <T> getDocumentsByIcpDoctype(@RequestParam("icp") String icp, @RequestParam("Doctype") String documentType ) throws ClassNotFoundException {
+        if (icp.equals("1")) {
+            throw new ResourceAccessException("n");
+        }
+        SNILSDoc snilsDoc = new SNILSDoc();
+        snilsDoc.setUuid(icp);
+        snilsDoc.setSnils(documentType);
+
+
+        return (ResponseEntity<T>) new ResponseEntity<>(snilsDoc, HttpStatus.OK);
+    }
 }

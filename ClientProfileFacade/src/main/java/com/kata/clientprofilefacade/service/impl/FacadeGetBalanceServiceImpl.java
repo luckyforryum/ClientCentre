@@ -12,7 +12,7 @@ public class FacadeGetBalanceServiceImpl implements FacadeGetBalanceService {
 
     private final FacadeGetBalanceDao facadeGetBalanceDao;
     @Override
-    public <T> ResponseEntity<T> getBalance(String icp, String baseCurrency, String currencies) {
-        return facadeGetBalanceDao.getBalance(icp,baseCurrency,currencies);
+    public <T> ResponseEntity<T> getBalance(String icp, String currencies) {
+        return facadeGetBalanceDao.getBalance(icp, currencies);
     }
 }

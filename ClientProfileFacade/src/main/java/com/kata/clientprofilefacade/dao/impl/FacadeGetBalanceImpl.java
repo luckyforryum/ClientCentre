@@ -6,7 +6,6 @@ import com.kata.clientprofilefacade.dao.FacadeGetBalanceDao;
 import com.kata.clientprofilefacade.dto.BalanceAccountDTO;
 import com.kata.clientprofilefacade.entity.Currency;
 import com.kata.clientprofilefacade.entity.CurrencyData;
-import com.kata.clientprofilefacade.entity.Meta;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -25,13 +24,14 @@ public class FacadeGetBalanceImpl implements FacadeGetBalanceDao {
     private final RestTemplate restTemplate;
 
 
-    public <T> ResponseEntity <T> getBalance(String icp, String baseCurrency, String currencies) {
+
+    public <T> ResponseEntity <T> getBalance(String icp, String currencies) {
         String url = "http://api.currencyapi.com/v3/latest";
         HttpHeaders headers = new HttpHeaders();
         headers.add("apikey", "gITSxQ0tO3fzYg98dFPeAaI1aCvLyfVHI4zwFddB");
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
                 .queryParam("currencies", currencies)
-                .queryParam("base_currency", baseCurrency);
+                .queryParam("base_currency", "RUB");
         HttpEntity<?> entity = new HttpEntity<>(headers);
 
         ResponseEntity<?> responseEntity = restTemplate.exchange(
@@ -51,26 +51,15 @@ public class FacadeGetBalanceImpl implements FacadeGetBalanceDao {
             throw new RuntimeException(e);
         }
 
-        Meta meta = currencyData.getMeta();
+
         Map<String , Currency> data = currencyData.getData();
         Currency currencyEur = data.get("EUR");
-        String eurCode = currencyEur.getCode();
         double eurValue = currencyEur.getValue();
 
         Currency currencyUsd = data.get("USD");
-        String usdCode = currencyUsd.getCode();
         double usdValue = currencyUsd.getValue();
 
-
-//        System.out.println("Meta " + meta);
-//
-//
-//        System.out.println("EUR Code: " + eurCode);
-//        System.out.println("EUR Value: " + eurValue);
-//
-//
-//        System.out.println("USD Code: " + usdCode);
-//        System.out.println("USD Value: " + usdValue);
+// нужно добаить обращение к лоадеру для поиска юзера по icp
 
         BalanceAccountDTO balance = new BalanceAccountDTO();
         balance.setIcp(icp);

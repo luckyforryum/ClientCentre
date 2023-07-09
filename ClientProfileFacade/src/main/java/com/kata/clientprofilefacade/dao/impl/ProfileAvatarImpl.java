@@ -53,8 +53,5 @@ public class ProfileAvatarImpl implements ProfileAvatarDao {
                 return ResponseEntity.badRequest().build();
             }
 
-
-
     }
-
 }
