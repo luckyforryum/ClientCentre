@@ -1,5 +1,5 @@
-package com.kata.clientprofileauthentication.util;
-import com.kata.clientprofileauthentication.models.ProfileToken;
+package com.kata.clientprofilefacade1.util;
+import com.kata.clientprofilefacade1.models.ProfileToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -10,8 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import static com.kata.clientprofileauthentication.util.JwtTokenGenerator.ACCESS_SECRET_KEY;
-import static com.kata.clientprofileauthentication.util.JwtTokenGenerator.REFRESH_SECRET_KEY;
+import static com.kata.clientprofilefacade1.util.JwtTokenGenerator.ACCESS_SECRET_KEY;
+import static com.kata.clientprofilefacade1.util.JwtTokenGenerator.REFRESH_SECRET_KEY;
 
 /**
  * сервис валидации и проверки токенов

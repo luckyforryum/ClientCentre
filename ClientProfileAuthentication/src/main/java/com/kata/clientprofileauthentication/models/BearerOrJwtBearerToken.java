@@ -1,4 +1,4 @@
-package com.kata.clientprofileauthentication.models;
+package com.kata.clientprofilefacade1.models;
 
 import lombok.Getter;
 import lombok.Setter;

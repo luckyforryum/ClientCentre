@@ -1,12 +1,12 @@
-package com.kata.clientprofileauthentication.service.serviceImpl;
+package com.kata.clientprofilefacade1.service.serviceImpl;
 
-import com.kata.clientprofileauthentication.models.BearerOrJwtBearerToken;
-import com.kata.clientprofileauthentication.models.BlackListOfProfileTokens;
-import com.kata.clientprofileauthentication.models.ProfileToken;
-import com.kata.clientprofileauthentication.repository.BlackListOfProfileTokensRepository;
-import com.kata.clientprofileauthentication.repository.ProfileTokenRepository;
-import com.kata.clientprofileauthentication.service.ProfileTokenManager;
-import com.kata.clientprofileauthentication.util.SecureUtils;
+import com.kata.clientprofilefacade1.models.BearerOrJwtBearerToken;
+import com.kata.clientprofilefacade1.models.BlackListOfProfileTokens;
+import com.kata.clientprofilefacade1.models.ProfileToken;
+import com.kata.clientprofilefacade1.repository.BlackListOfProfileTokensRepository;
+import com.kata.clientprofilefacade1.repository.ProfileTokenRepository;
+import com.kata.clientprofilefacade1.service.ProfileTokenManager;
+import com.kata.clientprofilefacade1.util.SecureUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

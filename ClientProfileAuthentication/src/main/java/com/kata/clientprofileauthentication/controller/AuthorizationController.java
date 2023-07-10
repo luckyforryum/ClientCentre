@@ -1,10 +1,10 @@
-package com.kata.clientprofileauthentication.controller;
+package com.kata.clientprofilefacade1.controller;
 
-import com.kata.clientprofileauthentication.models.BearerOrJwtBearerToken;
-import com.kata.clientprofileauthentication.models.ProfileToken;
-import com.kata.clientprofileauthentication.service.serviceImpl.BlackProfileTokenServiceImpl;
-import com.kata.clientprofileauthentication.service.serviceImpl.ProfileTokenManagerImpl;
-import com.kata.clientprofileauthentication.service.serviceImpl.ProfileTokenServiceImpl;
+import com.kata.clientprofilefacade1.models.BearerOrJwtBearerToken;
+import com.kata.clientprofilefacade1.models.ProfileToken;
+import com.kata.clientprofilefacade1.service.serviceImpl.BlackProfileTokenServiceImpl;
+import com.kata.clientprofilefacade1.service.serviceImpl.ProfileTokenManagerImpl;
+import com.kata.clientprofilefacade1.service.serviceImpl.ProfileTokenServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
