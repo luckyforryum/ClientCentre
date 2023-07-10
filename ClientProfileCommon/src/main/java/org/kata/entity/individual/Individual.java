@@ -8,6 +8,7 @@ import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 import org.kata.entity.contactmedium.ContactMedium;
 import org.kata.entity.document.Documents;
+import org.kata.enums.IndividualStatus;
 
 
 import java.util.Collection;
@@ -60,5 +61,9 @@ public class Individual {
     @JsonManagedReference
     @OneToMany(mappedBy = "individual", fetch = FetchType.LAZY)
     private Collection<Address> address;
+    @Transient
+    private IndividualStatus status = IndividualStatus.NOT_CLIENT;
+    @Transient
+    private Date dateStatus;
 
 }
