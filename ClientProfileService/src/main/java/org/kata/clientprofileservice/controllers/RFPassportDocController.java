@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/rFPassportDoc")
 @RequiredArgsConstructor
-public class RFPassportDoc {
+public class RFPassportDocController {
     private final RFPassportDocService service;
 
     @PostMapping("/createRFPassport")
