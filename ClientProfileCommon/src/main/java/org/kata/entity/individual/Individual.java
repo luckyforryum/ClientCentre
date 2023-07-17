@@ -14,6 +14,7 @@ import org.kata.entity.document.Documents;
 import org.kata.enums.IndividualStatus;
 
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 
@@ -55,7 +56,7 @@ public class Individual {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY) //(mappedBy = "individual"****
     @JoinColumn(name = "documents_id")
     private Documents documents;
-
+    @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "contacts_id")
     private ContactMedium contacts;
@@ -66,9 +67,17 @@ public class Individual {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "individual", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<Address> address;
-    @Transient
-    private IndividualStatus status = IndividualStatus.NOT_CLIENT;
-    @Transient
-    private Date dateStatus;
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private IndividualStatus status;
+    @Column(name = "date_status")
+    private LocalDateTime dateStatus;
+
+    @PrePersist
+    public void setDefaultStatusValues() {
+        if (status == null) {
+            status = IndividualStatus.NOT_CLIENT;
+        }
+    }
 
 }

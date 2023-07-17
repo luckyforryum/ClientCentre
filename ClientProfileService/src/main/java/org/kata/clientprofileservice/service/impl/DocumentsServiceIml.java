@@ -8,6 +8,8 @@ import org.kata.entity.document.Documents;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class DocumentsServiceIml implements DocumentsService {
@@ -16,8 +18,8 @@ public class DocumentsServiceIml implements DocumentsService {
 
     @Override
     public DocumentsResponseDto getDocuments(String icp) {
-        Documents documents = documentsRepo.findByUserIcp(icp);
-        DocumentsResponseDto dto = modelMapper.map(documents, DocumentsResponseDto.class);
-        return dto;
+        Optional<Documents> documents = documentsRepo.findByUserIcp(icp);
+        return documents.map(value -> modelMapper.map(value, DocumentsResponseDto.class)).orElse(null);
+
     }
 }

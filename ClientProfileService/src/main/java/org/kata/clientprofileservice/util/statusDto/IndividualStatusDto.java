@@ -1,22 +1,21 @@
-package org.kata.dto.response;
-
+package org.kata.clientprofileservice.util.statusDto;
 
 import lombok.*;
+import org.kata.dto.response.AddressResponseDto;
+import org.kata.dto.response.ContactMediumResponseDto;
+import org.kata.dto.response.DocumentsResponseDto;
 import org.kata.enums.IndividualStatus;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Date;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class IndividualResponseDto {
-
-    private String uuid;
-
-    private String icp;
+@ToString
+public class IndividualStatusDto {
 
     private String name;
 
@@ -37,5 +36,14 @@ public class IndividualResponseDto {
     private IndividualStatus status;
 
     private LocalDateTime dateStatus;
+
+    private DocumentsResponseDto documents;
+
+    private ContactMediumResponseDto contacts;
+
+    private Collection<AddressResponseDto> address;
+
+
+
 
 }
