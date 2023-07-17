@@ -1,4 +1,4 @@
-package com.kata.clientprofilefacade1.models;
+package com.kata.clientprofileauthentication.models.tokens;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,6 +1,6 @@
-package com.kata.clientprofilefacade1.repository;
+package com.kata.clientprofileauthentication.repository.tokenRepository;
 
-import com.kata.clientprofilefacade1.models.ProfileToken;
+import com.kata.clientprofileauthentication.models.tokens.ProfileToken;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,7 +9,4 @@ import org.springframework.stereotype.Repository;
 public interface ProfileTokenRepository extends CrudRepository<ProfileToken, String> {
     ProfileToken getProfileTokenByBearerToken(String bearerToken);
     ProfileToken getProfileTokensByJwtBearerToken(String jwtBearerToken);
-    boolean existsByBearerToken(String BearerToken);
-    boolean existsByJwtBearerToken(String JwtBearerToken);
-
 }

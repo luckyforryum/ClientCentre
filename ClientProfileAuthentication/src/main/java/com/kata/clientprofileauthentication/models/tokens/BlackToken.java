@@ -1,4 +1,4 @@
-package com.kata.clientprofilefacade1.models;
+package com.kata.clientprofileauthentication.models.tokens;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,11 +12,11 @@ import org.springframework.data.redis.core.index.Indexed;
 @AllArgsConstructor
 @Builder
 @Data
-public class BlackListOfProfileTokens {
+public class BlackToken {
     /**
      * токены хранятся в redis под ключем blackTokenKey неупорядочно
      */
     @Id
     @Indexed
-    private String bRefreshOrJwtOrBearer;
+    private String blackToken;
 }

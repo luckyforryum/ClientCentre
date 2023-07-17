@@ -1,5 +1,5 @@
-package com.kata.clientprofilefacade1.util;
-import com.kata.clientprofilefacade1.models.ProfileToken;
+package com.kata.clientprofileauthentication.util;
+import com.kata.clientprofileauthentication.models.tokens.ProfileToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -10,8 +10,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import static com.kata.clientprofilefacade1.util.JwtTokenGenerator.ACCESS_SECRET_KEY;
-import static com.kata.clientprofilefacade1.util.JwtTokenGenerator.REFRESH_SECRET_KEY;
+
+import static com.kata.clientprofileauthentication.util.PropertiesInitialization.ACCESS_SECRET_KEY;
+import static com.kata.clientprofileauthentication.util.PropertiesInitialization.REFRESH_SECRET_KEY;
 
 /**
  * сервис валидации и проверки токенов
@@ -19,13 +20,23 @@ import static com.kata.clientprofilefacade1.util.JwtTokenGenerator.REFRESH_SECRE
 @Component
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class SecureUtils {
+public class TokenUtils {
     private final JwtTokenGenerator jwtTokenGenerator;
+    /**
+     * метод для обновления jwtBearer или Bearer токенов
+     * @param token - принимает на вход 1 jwtBearer или Bearer Токен
+     * @return -возвращает обновленный токен
+     */
     public String refreshTokens(String token) {
         return jwtTokenGenerator.generateBearerOrJwtBearerToken(token);
     }
-    public boolean validateRefreshToken(String refreshToken) {
-        return validateToken(refreshToken, REFRESH_SECRET_KEY);
+    /**
+     * метод проверки refresh токена
+     * @param profileToken -  принимает на вход общий profiletoken
+     * @return значение tru or false
+     */
+    public boolean validateRefreshTokenByJwtBearerOrBearerToken(ProfileToken profileToken) {
+        return validateToken(profileToken.getRefreshToken(), REFRESH_SECRET_KEY);
     }
     private boolean validateToken(String token, String key) {
         try {
@@ -33,6 +44,7 @@ public class SecureUtils {
                     .setSigningKey(jwtTokenGenerator.secretKeyFabric(key))
                     .build()
                     .parseClaimsJws(token);
+            log.info("Токены валидны");
             return true;
         } catch (ExpiredJwtException expEx) {
             log.error("Token expired", expEx);
@@ -45,8 +57,14 @@ public class SecureUtils {
         } catch (Exception e) {
             log.error("invalid token", e);
         }
+        log.warn("Токены невалидны");
         return false;
     }
+    /**
+     * методы который вытаскивает Claims (далле роли ROLES)
+     * @param accessToken - JwtBearer токен
+     * @return - вытаскивает claims по секретному ключу и JwtBearer токену
+     */
     public Claims getAccessClaims(String accessToken) {
         return getClaims(accessToken, ACCESS_SECRET_KEY);
     }
@@ -56,8 +74,5 @@ public class SecureUtils {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-    }
-    public boolean validateRefreshTokenByJwtBearerOrBearerToken(ProfileToken profileTokensByBearerOrJwtBearerToken) {
-        return validateRefreshToken(profileTokensByBearerOrJwtBearerToken.getRefreshToken());
     }
 }
