@@ -1,4 +1,4 @@
-package com.kata.clientprofilefacade.exception;
+package com.kata.clientprofilefacade.exception.handler;
 
 import com.kata.clientprofilefacade.exception.individualexception.InvalidFullNameException;
 import com.kata.clientprofilefacade.exception.phonenumberexception.InvalidPhoneNumberException;

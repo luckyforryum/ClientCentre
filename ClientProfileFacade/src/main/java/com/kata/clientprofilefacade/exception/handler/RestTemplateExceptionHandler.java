@@ -1,4 +1,4 @@
-package com.kata.clientprofilefacade.exception;
+package com.kata.clientprofilefacade.exception.handler;
 
 import org.kata.erroresponse.ErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -25,13 +25,11 @@ public class RestTemplateExceptionHandler {
     @ExceptionHandler(IOException.class)
     public ResponseEntity<ErrorResponse> handleIOException(IOException ex) {
         ErrorResponse errorResponse = new ErrorResponse("Internal server error occurred while processing the request", HttpStatus.INTERNAL_SERVER_ERROR, 500);
-
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ResourceAccessException.class)
     public ResponseEntity<org.kata.erroresponse.ErrorResponse> handleResourceAccessException(IOException ex) {
-        System.out.println(ex.getMessage());
         ErrorResponse errorResponse = new ErrorResponse("The requested resource is currently unavailable", HttpStatus.SERVICE_UNAVAILABLE, 503);
         return new ResponseEntity<>(errorResponse, HttpStatus.SERVICE_UNAVAILABLE);
     }

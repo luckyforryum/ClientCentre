@@ -1,4 +1,4 @@
-package com.kata.clientprofilefacade.service.impl;
+package com.kata.clientprofilefacade.util;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpEntity;
