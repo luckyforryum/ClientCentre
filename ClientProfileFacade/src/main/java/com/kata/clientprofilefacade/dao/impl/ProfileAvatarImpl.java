@@ -1,6 +1,7 @@
 package com.kata.clientprofilefacade.dao.impl;
 
 import com.kata.clientprofilefacade.dao.ProfileAvatarDao;
+import com.kata.clientprofilefacade.service.IPRangeService;
 import com.kata.clientprofilefacade.util.PrometheusCustomization;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 
 @Repository
 @AllArgsConstructor
@@ -22,9 +25,10 @@ public class ProfileAvatarImpl implements ProfileAvatarDao {
     private final PrometheusCustomization prometheusCustomization;
 
 
-    @SneakyThrows
+
     @Override
-    public <T> ResponseEntity<T> performAvatarOperation(MultipartFile file, Integer id, String profileIdentification, String uuid, Boolean active, String endpoint, HttpMethod httpMethod, Class<T> responseType, HttpServletRequest request, String graphName) {
+    public <T> ResponseEntity<T> performAvatarOperation(MultipartFile file, Integer id, String profileIdentification, String uuid, Boolean active, String endpoint, HttpMethod httpMethod, Class<T> responseType, HttpServletRequest request, String graphName) throws IOException {
+
 
             prometheusCustomization.add(request, graphName);
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
@@ -54,6 +58,5 @@ public class ProfileAvatarImpl implements ProfileAvatarDao {
             } else {
                 return ResponseEntity.badRequest().build();
             }
-
     }
 }
