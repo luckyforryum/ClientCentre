@@ -1,11 +1,9 @@
 package com.kata.clientprofilefacade.dao.impl;
 
 import com.kata.clientprofilefacade.dao.ProfileAvatarDao;
-import com.kata.clientprofilefacade.service.IPRangeService;
 import com.kata.clientprofilefacade.util.PrometheusCustomization;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Repository;

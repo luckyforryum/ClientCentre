@@ -46,7 +46,6 @@ public class GetDocumentsImpl implements GetDocumentsDao {
             return userCheck.getDocumentsById(uuid).getStatusCode() == HttpStatus.OK ?
                     ResponseEntity.ok((T) "Да, такой документ есть") :
                     ResponseEntity.ok((T) "Нет, такого документа есть");
-//            return (ResponseEntity<T>) new ResponseEntity<>("Токен неверный", validateToken.checkToken(token));
         }
     }
 

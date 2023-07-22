@@ -25,7 +25,7 @@ public class AvatarUrls {
             @Value("http://localhost:65374/avatars") String UPDATE,
             @Value("http://localhost:65374/avatars/update") String UPDATE_AVATAR_AND_ACTIVE,
             @Value("http://localhost:65374/avatars/updateActive") String UPDATE_ACTIVE,
-            @Value("http://localhost:65374/avatars/get/id/") String GET_AVATAR_BY_ID,
+            @Value("http://localhost:60126/avatars/get/id/") String GET_AVATAR_BY_ID,
             @Value("http://localhost:65374/avatars/get/UUID/") String GET_AVATAR_BY_UUID,
             @Value("http://localhost:65374/avatars/get/profileIdentification") String GET_ACTIVE_AVATARS_BY_PI,
             @Value("http://localhost:65374/avatars/get/list/") String GET_AVATARS_BY_PI,

@@ -3,15 +3,12 @@ package com.kata.clientprofilefacade.config;
 import java.util.Properties;
 import javax.sql.DataSource;
 
-import liquibase.integration.spring.SpringLiquibase;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -38,8 +35,7 @@ public class ConfigurationPostgresql {
     private String show_sql;
     @Value("${datasource.scan}")
     private String packageScan;
-    @Value("${liquibase.changelog}")
-    private String changelog;
+
 
     @Bean
     public DataSource dataSource() {
@@ -73,25 +69,5 @@ public class ConfigurationPostgresql {
         properties.setProperty("hibernate.hbm2ddl.auto", hbm2ddl);
         properties.setProperty("hibernate.show_sql", show_sql);
         return properties;
-    }
-
-    @Primary
-    @Bean
-    @ConfigurationProperties(prefix = "datasource.liquibase")
-    public LiquibaseProperties liquibaseProperties() {
-        return new LiquibaseProperties();
-    }
-
-    @Bean
-    public SpringLiquibase liquibase(DataSource dataSource, LiquibaseProperties liquibaseProperties) {
-        SpringLiquibase liquibase = new SpringLiquibase();
-        liquibase.setDataSource(dataSource);
-        liquibase.setChangeLog(changelog);
-        liquibase.setContexts(liquibaseProperties.getContexts());
-        liquibase.setDefaultSchema(liquibaseProperties.getDefaultSchema());
-        liquibase.setLiquibaseSchema(liquibaseProperties.getLiquibaseSchema());
-        liquibase.setLiquibaseTablespace(liquibaseProperties.getLiquibaseTablespace());
-        liquibase.setDropFirst(liquibaseProperties.isDropFirst());
-        return liquibase;
     }
 }

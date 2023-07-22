@@ -1,6 +1,5 @@
 package com.kata.clientprofilefacade.service;
 
-import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
