@@ -34,7 +34,6 @@ public class AvatarController {
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     public void saveNewAvatar(@RequestParam("file") MultipartFile file, @RequestParam("profileIdentification") String profileIdentification,@RequestParam("active") boolean active) {
             service.addAvatarActive(file,profileIdentification,active);
-
     }
     //обновление аватара
     @PatchMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
